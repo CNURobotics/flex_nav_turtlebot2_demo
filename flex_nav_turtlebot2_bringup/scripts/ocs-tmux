@@ -1,0 +1,35 @@
+#!/usr/bin/bash
+
+echo "Kill any existing OCS tmux ..."
+tmux kill-session -t turtlebot-ocs
+sleep 1
+
+echo "Launch RViz ..."
+tmux new-session -d -sturtlebot-ocs -nrviz ros2 launch flex_nav_turtlebot2_bringup rviz.launch.py use_sim_time:=${USE_SIM_TIME:=True}
+
+echo "Wait 2 seconds for RViz startup ..."
+sleep 2
+
+echo "Launch FlexBE Mirror ..."
+tmux new-window -n flexbe_mirror -tturtlebot-ocs ros2 run flexbe_mirror behavior_mirror_sm --ros-args --remap name:="behavior_mirror" use_sim_time:=${USE_SIM_TIME:=True}
+
+echo "Wait 2 seconds for Mirror startup ..."
+sleep 2
+
+echo "Launch FlexBE Behavior Launcher ..."
+tmux new-window -n flexbe_launcher -tturtlebot-ocs ros2 run flexbe_widget be_launcher --ros-args --remap name:="behavior_launcher" use_sim_time:=${USE_SIM_TIME:=True}
+
+echo "Wait 2 seconds for Launcher startup ..."
+sleep 2
+
+echo "Launch FlexBE App ..."
+tmux new-window -n flexbe_app -tturtlebot-ocs  -- ros2 run flexbe_app run_app --ros-args --remap name:="flexbe_app" use_sim_time:=${USE_SIM_TIME:=True}
+
+if $USE_SIM_TIME ; then
+  echo "Using simulation time - should be tied to simulation not hardware!"
+else
+  echo ""
+  echo "Using wall clock time - should be tied to hardware not simulation!"
+  echo ""
+fi
+echo ""

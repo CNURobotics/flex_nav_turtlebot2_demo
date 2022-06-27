@@ -1,0 +1,20 @@
+#!/usr/bin/bash
+echo "Launching Flex logging  ..."
+gnome-terminal --tab --title="request_behavior" -- ros2 topic echo /flexbe/request_behavior --qos-reliability=reliable --qos-durability=volatile
+
+echo "start beh ..."
+gnome-terminal --tab --title="start_behavior" -- ros2 topic echo --qos-reliability=reliable --qos-durability=volatile /flexbe/start_behavior
+gnome-terminal --tab --title="behavior_update" -- ros2 topic echo --qos-reliability=reliable --qos-durability=volatile /flexbe/behavior_update
+gnome-terminal --tab --title="log" -- ros2 topic echo --qos-reliability=reliable --qos-durability=volatile /flexbe/log
+gnome-terminal --tab --title="status" -- ros2 topic echo --qos-reliability=reliable --qos-durability=volatile /flexbe/status
+gnome-terminal --tab --title="heartbeat" -- ros2 topic echo --qos-reliability=reliable --qos-durability=volatile /flexbe/heartbeat
+gnome-terminal --tab --title="command_feedback" -- ros2 topic echo --qos-reliability=reliable --qos-durability=volatile /flexbe/command_feedback
+gnome-terminal --tab --title="outcome_request" -- ros2 topic echo --qos-reliability=reliable --qos-durability=volatile /flexbe/outcome_request
+gnome-terminal --tab --title="request_mirror_structure" -- ros2 topic echo --qos-reliability=reliable --qos-durability=volatile /flexbe/request_mirror_structure
+gnome-terminal --tab --title="uicommand" -- ros2 topic echo --qos-reliability=reliable --qos-durability=volatile /flexbe/uicommand
+gnome-terminal --tab --title="mirror_outcome"  ros2 topic echo --qos-reliability=reliable --qos-durability=volatile /flexbe/mirror/outcome
+gnome-terminal --tab --title="structure" -- ros2 topic echo --qos-reliability=reliable --qos-durability=volatile /flexbe/mirror/structure
+gnome-terminal --tab --title="mirror_sync" -- ros2 topic echo --qos-reliability=reliable --qos-durability=volatile /flexbe/mirror/sync
+gnome-terminal --tab --title="preempt" -- ros2 topic echo --qos-reliability=reliable --qos-durability=volatile /flexbe/mirror/preempt
+gnome-terminal --tab --title="cmd_vel" -- ros2 topic echo --qos-reliability=reliable --qos-durability=volatile /cmd_vel
+gnome-terminal --tab --title="marker" -- ros2 topic echo --qos-reliability=reliable --qos-durability=volatile /marker

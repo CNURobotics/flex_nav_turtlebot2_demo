@@ -1,0 +1,13 @@
+#!/usr/bin/bash
+echo "Launching Flex command logging  ..."
+gnome-terminal --tab --title='/flexbe/command/transition' --  ros2 topic echo --qos-reliability=reliable --qos-durability=volatile /flexbe/command/transition
+gnome-terminal --tab --title='/flexbe/command/autonomy' --  ros2 topic echo --qos-reliability=reliable --qos-durability=volatile /flexbe/command/autonomy
+gnome-terminal --tab --title='/flexbe/command/preempt' --  ros2 topic echo --qos-reliability=reliable --qos-durability=volatile /flexbe/command/preempt
+gnome-terminal --tab --title='/flexbe/command/lock' --  ros2 topic echo --qos-reliability=reliable --qos-durability=volatile /flexbe/command/lock
+gnome-terminal --tab --title='/flexbe/command/unlock' --  ros2 topic echo --qos-reliability=reliable --qos-durability=volatile /flexbe/command/unlock
+gnome-terminal --tab --title="/flexbe/command/sync" --  ros2 topic echo --qos-reliability=reliable --qos-durability=volatile /flexbe/command/sync
+gnome-terminal --tab --title='/flexbe/command/attach' --  ros2 topic echo --qos-reliability=reliable --qos-durability=volatile /flexbe/command/attach
+gnome-terminal --tab --title='/flexbe/command/repeat' --  ros2 topic echo --qos-reliability=reliable --qos-durability=volatile /flexbe/command/repeat
+gnome-terminal --tab --title='/flexbe/command/pause' --  ros2 topic echo --qos-reliability=reliable --qos-durability=volatile /flexbe/command/pause
+gnome-terminal --tab --title='/flexbe/uinotification' --  ros2 topic echo --qos-reliability=reliable --qos-durability=volatile /flexbe/uinotification
+gnome-terminal --tab --title='/flexbe/ui_version' --  ros2 topic echo --qos-reliability=reliable --qos-durability=volatile /flexbe/ui_version

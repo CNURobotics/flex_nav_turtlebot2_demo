@@ -1,0 +1,32 @@
+#!/usr/bin/bash
+
+echo "Launch RViz ..."
+gnome-terminal --tab --title="RViz" -- ros2 launch flex_nav_turtlebot2_bringup rviz.launch.py use_sim_time:=${USE_SIM_TIME:=True}
+
+echo "Wait 2 seconds for RViz startup ..."
+sleep 2
+
+echo "Launch FlexBE Mirror ..."
+gnome-terminal --tab --title="FlexBE Mirror" -- ros2 run flexbe_mirror behavior_mirror_sm --ros-args --remap name:="behavior_mirror" use_sim_time:=${USE_SIM_TIME:=True}
+
+echo "Wait 2 seconds for Mirror startup ..."
+sleep 2
+
+echo "Launch FlexBE Behavior Launcher ..."
+gnome-terminal --tab --title="FlexBE Launcher" -- ros2 run flexbe_widget be_launcher --ros-args --remap name:="behavior_launcher" use_sim_time:=${USE_SIM_TIME:=True}
+
+echo "Wait 2 seconds for Launcher startup ..."
+sleep 2
+
+echo "Launch FlexBE App ..."
+gnome-terminal --tab --title="FlexBE App" -- ros2 run flexbe_app run_app --ros-args --remap name:="flexbe_app" use_sim_time:=${USE_SIM_TIME:=True}
+
+echo ""
+
+if $USE_SIM_TIME ; then
+  echo "Using simulation time - should be tied to simulation not hardware!"
+else
+  echo ""
+  echo "Using wall clock time - should be tied to hardware not simulation!"
+  echo ""
+fi

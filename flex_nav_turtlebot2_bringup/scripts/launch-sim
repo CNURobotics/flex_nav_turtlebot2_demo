@@ -1,0 +1,29 @@
+#!/usr/bin/bash
+
+echo "Kill any existing ROS2 daemon ..."
+ros2 daemon stop  # to avoid https://github.com/ros2/ros2cli/issues/582
+
+
+echo "Launching Gazebo simulation environment ..."
+gnome-terminal --tab --title="Gazebo" --  ros2 launch chris_world_models ${WORLD_MODEL:=gazebo_creech_world}.launch.py use_sim_time:=True
+
+echo "Wait 5 seconds for Gazebo startup ..."
+sleep 5
+
+echo "Launch turtlebot2 sinulation ..."
+gnome-terminal --tab --title="Turtlebot" --  ros2 launch chris_ros_turtlebot2 turtlebot_gazebo.launch.py use_sim_time:=True
+sleep 2
+
+
+echo ""
+echo "Launch the Onboard and OCS software separately!"
+#NOTE: use_sim_time should always true for simulation!
+if $USE_SIM_TIME ; then
+  echo "Using simulation time!"
+else
+  echo ""
+  echo ""
+  echo "The USE_SIM_TIME environment variable is not set or set to False!"
+  echo "  Ensure that use_sim_time = True for all nodes if using Gazebo."
+  echo ""
+fi

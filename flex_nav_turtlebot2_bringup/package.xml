@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<package format="3">
+  <name>flex_nav_turtlebot2_bringup</name>
+  <version>0.0.1</version>
+  <description>Setup to demonstrate the FlexBE-based flexible_navigation setup using turtlebot2 setup</description>
+  <maintainer email="robotics@cnu.edu">David Conner</maintainer>
+  <license>BSD</license>
+  <url type="bugtracker">https://github.com/FlexBE/flex_nav_turtlebot2/issues</url>
+  <url type="repository">https://github.com/FlexBE/flex_nav_turtlebot2</url>
+  <url type="website">https://github.com/FlexBE/flex_nav_turtlebot2</url>
+  <author>David Conner</author>
+
+  <depend>rclcpp</depend>
+  <depend>sensor_msgs</depend>
+  <depend>dwb_core</depend>
+  <depend>flex_nav_planners</depend>
+  <depend>flex_nav_controllers</depend>
+  <depend>flex_nav_flexbe_states</depend>
+  <depend>turtlebot2</depend>
+  <depend>turtlebot2-gazebo</depend>
+
+  <export>
+    <build_type>ament_cmake</build_type>
+  </export>
+</package>

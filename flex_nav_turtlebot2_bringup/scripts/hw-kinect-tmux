@@ -1,0 +1,27 @@
+#!/usr/bin/bash
+
+echo "Kill any existing Turtlebot HW ..."
+tmux kill-session -t turtlebot-hw
+sleep 1
+
+echo "Kill any existing ROS2 daemon ..."
+ros2 daemon stop  # to avoid https://github.com/ros2/ros2cli/issues/582
+
+echo "Start new Turtlebot hardware drivers tmux session (detached) ..."
+echo "Launching Turtlebot ..."
+tmux new-session -d -sturtlebot-hw -nturtlebot ros2 launch chris_ros_turtlebot2 turtlebot_kinect_bringup.launch.py use_sim_time:=${USE_SIM_TIME:=True}
+sleep 3
+
+echo "Launch camera ..."
+tmux new-window -n camera -tturtlebot-hw ros2 launch chris_ros_turtlebot2 kinect_bringup.launch.py use_sim_time:=${USE_SIM_TIME:=True}
+sleep 1
+
+if ${USE_SIM_TIME:=False} ; then
+  echo "Using simulation time - need to fix environment variable if starting hardware!"
+else
+  echo ""
+  echo "Using wall clock time - as appropriate for hardware!"
+  echo ""
+fi
+echo ""
+echo "Launch the Onboard and OCS separately!"
