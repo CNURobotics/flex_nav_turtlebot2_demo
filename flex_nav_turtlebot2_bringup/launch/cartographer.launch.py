@@ -36,7 +36,7 @@ def generate_launch_description():
     resolution = LaunchConfiguration('resolution', default='0.05')
     publish_period_sec = LaunchConfiguration('publish_period_sec', default='1.0')
 
-    rviz_config_dir = os.path.join(get_package_share_directory('flex_nav_turtlebot2_bringup'),
+    rviz_config_dir = os.path.join(flex_nav_turtlebot2_bringup_prefix,
                                    'rviz', 'turtlebot2_flex_nav_demo.rviz')
 
     return LaunchDescription([

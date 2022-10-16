@@ -11,13 +11,13 @@ echo "Wait 2 seconds for RViz startup ..."
 sleep 2
 
 echo "Launch FlexBE Mirror ..."
-tmux new-window -n flexbe_mirror -tturtlebot-ocs ros2 run flexbe_mirror behavior_mirror_sm --ros-args --remap name:="behavior_mirror" use_sim_time:=${USE_SIM_TIME:=True}
+tmux new-window -n flexbe_mirror -tturtlebot-ocs ros2 run flexbe_mirror behavior_mirror_sm --ros-args --remap name:="behavior_mirror"
 
 echo "Wait 2 seconds for Mirror startup ..."
 sleep 2
 
 echo "Launch FlexBE Behavior Launcher ..."
-tmux new-window -n flexbe_launcher -tturtlebot-ocs ros2 run flexbe_widget be_launcher --ros-args --remap name:="behavior_launcher" use_sim_time:=${USE_SIM_TIME:=True}
+tmux new-window -n flexbe_launcher -tturtlebot-ocs ros2 run flexbe_widget be_launcher --ros-args --remap name:="behavior_launcher"
 
 echo "Wait 2 seconds for Launcher startup ..."
 sleep 2

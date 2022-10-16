@@ -15,8 +15,8 @@ Installation and Setup
 
 This package has a number of dependencies.  
 
-For CNU Robotics course work, we will add a number of repos to our setup and
-install.
+For CNU Robotics work, we typically use [CHRISLab Install] scripts to handle workspace
+setup, install, and build.  The below repos are including in the install scripts there.
 
 
 Quickly skim this README before installing or running anything:
@@ -24,26 +24,26 @@ Quickly skim this README before installing or running anything:
 This demonstration makes use of the following repositories:
 
 <pre>
-- git: {local-name: src/flex_nav_turtlebot2_demo, uri: 'https://github.com/CNURobotics/flex_nav_turtlebot2_demo.git', version: humble-devel }
-- git: {local-name: src/flexbe_app,               uri: 'https://github.com/CNURobotics/flexbe_app.git',               version: humble-sync-rework }
-- git: {local-name: src/flexbe_behavior_engine,   uri: 'https://github.com/CNURobotics/flexbe_behavior_engine.git',   version: humble-sync-rework }
-- git: {local-name: src/flexible_navigation,      uri: 'https://github.com/CNURobotics/flexible_navigation.git',      version: humble-sync-rework }
-- git: {local-name: src/ball_detector,            uri: 'https://github.com/CNURobotics/ball_detector.git',            version: humble-demo }
+- git: {local-name: src/flexbe_app,               uri: 'https://github.com/FlexBE/flexbe_app.git',                    version: ros2-devel }
+- git: {local-name: src/flexbe_behavior_engine,   uri: 'https://github.com/FlexBE/flexbe_behavior_engine.git',        version: ros2-devel }
+- git: {local-name: src/flexible_navigation,      uri: 'https://github.com/FlexBE/flexible_navigation.git',           version: ros2-devel }
+- git: {local-name: src/flex_nav_turtlebot2_demo, uri: 'https://github.com/CNURobotics/flex_nav_turtlebot2_demo.git', version: ros2-devel }
+- git: {local-name: src/ball_detector,            uri: 'https://github.com/CNURobotics/ball_detector.git',            version: ros2-devel }
 - git: {local-name: src/chris_ros_turtlebot2,     uri: 'https://github.com/CNURobotics/chris_ros_turtlebot2.git',     version: ros2-devel }
-- git: {local-name: src/chris_world_models,       uri: 'https://github.com/CNURobotics/chris_world_models.git',       version: humble-ros2-devel }
-- git: {local-name: src/image_pipeline,           uri: 'https://github.com/CNURobotics/image_pipeline.git',           version: rolling-image-flip }
+- git: {local-name: src/chris_world_models,       uri: 'https://github.com/CNURobotics/chris_world_models.git',       version: ros2-devel }
+- git: {local-name: src/image_pipeline,           uri: 'https://github.com/CNURobotics/image_pipeline.git',           version: humble-image-flip }
+- git: {local-name: src/openni2_camera,           uri: 'https://github.com/CNURobotics/openni2_camera.git',           version: astra-humble }
 </pre>
 
-At this current stage, some Kobuki Turtlebot2 related packages are not released in ROS2 binary form, so we are using the
-following for source builds:
+At this current stage, some Kobuki Turtlebot2 related packages are not released in ROS2 binary form, so we are using the following for source builds:
 <pre>
-https://github.com/kobuki-base/kobuki_ros_interfaces.git devel
-https://github.com/stonier/ecl_tools.git                 devel
-https://github.com/stonier/sophus.git                    release/1.2.x
-https://github.com/CNURobotics/ecl_lite.git              humble-test (Custom fork!)
-https://github.com/CNURobotics/ecl_core.git              humble-test (Custom fork!)
-https://github.com/CNURobotics/kobuki_ros.git            humble-test (Custom fork!)
-https://github.com/CNURobotics/openni2_camera.git        debug-astra-galactic
+- git: {local-name: src/sophus,                   uri: 'https://github.com/stonier/sophus.git',                            version: release/1.2.x }
+- git: {local-name: src/ecl_tools,                uri: 'https://github.com/stonier/ecl_tools.git',                         version: devel }
+- git: {local-name: src/ecl_lite,                 uri: 'https://github.com/stonier/ecl_lite.git',                          version: devel }
+- git: {local-name: src/ecl_core.git,             uri: 'https://github.com/stonier/ecl_core.git',                          version: devel }
+- git: {local-name: src/kobuki_ros,               uri: 'https://github.com/CNURobotics/kobuki_ros.git',                    version: humble-test }
+- git: {local-name: src/kobuki_core,              uri: 'https://github.com/kobuki-base/kobuki_core.git',                   version: devel }
+- git: {local-name: src/kobuki_ros_interfaces,    uri: 'https://github.com/kobuki-base/kobuki_ros_interfaces.git',         version: devel }
 </pre>
 
 
@@ -194,8 +194,8 @@ After OCS startup, all control is through the FlexBE App operator interface and 
 
 * First load the desired behavior through the `FlexBE Behavior Dashboard` tab.
   * The behavior should match the flex launch started above.
-    * 'flex.launch' --> `Turtlebot Flex Planner`
-    * 'flex_multi_level.launch' --> `Turtlebot Multi Level Flex Planner`
+    * `flex.launch` --> `Turtlebot Flex Planner`
+    * `flex_multi_level.launch` --> `Turtlebot Multi Level Flex Planner`
 
 * Examine (but don't modify yet!) the behavior using the `Statemachine Editor` button on FlexBE app
   * Click on a state to see the configurable parameters
@@ -247,3 +247,4 @@ Please use the following publications for reference when using Flexible Navigati
 [ROS 2 Installation]: https://docs.ros.org/en/foxy/Installation.html
 [ROS 2 Navigation2]: https://navigation.ros.org/
 [ros2_control]:https://control.ros.org/getting_started.html
+[CHRISLab Install]: https://github.com/CNURobotics/chris_install
