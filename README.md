@@ -10,6 +10,13 @@ This repository contains code that interfaces with the ROS 2 versions of the
 [Kobuki Turtlebot2] models, the [FlexBE Behavior Engine],
 [FlexBE App], and the [Flexible Navigation] system.
 
+
+ > NOTE:  As of 18-Oct-22 with the ROS Humble release an issue with the Navigation 2 costmap causes issue with
+ > default DDS implementation Fast DDS (ros-humble-rmw-fastrtps-cpp).  
+ > Switching to `export RMW_IMPLEMENTATION=rmw_cyclonedds_cpp` seems to fix issue.
+ > Track https://github.com/ros-planning/navigation2/issues/3014 , 3018, and 2489 for more information.
+
+
 Installation and Setup
 ----------------------
 
@@ -110,8 +117,8 @@ export FLEX_NAV_SETUP=flex # (or flex_multi_level)
 export WORLD_MODEL=gazebo_creech_world #( if not set by launch, see the `chris_world_models` package for more world model setups.)
 </pre>
 
-Typically the `setup.bash` us created by the setup script created during our standard
-install process (https://github.com/CNURobotics/chris_install)
+Typically the `setup.bash` is created by the setup script created during our standard
+install process [CHRISLab Install] .
 
 The following directions are for a simple demonstration of Flexible Navigation
 

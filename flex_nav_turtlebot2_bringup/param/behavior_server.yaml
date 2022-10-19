@@ -1,6 +1,6 @@
 behavior_server:
   ros__parameters:
-    costmap_topic: local_costmap/costmap
+    costmap_topic: local_costmap/costmap_raw  # nav2_msgs/CostMap type
     footprint_topic: local_costmap/footprint
     cycle_frequency: 10.0
     behavior_plugins: ["spin", "backup", "wait"]
