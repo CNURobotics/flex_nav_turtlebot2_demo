@@ -25,9 +25,6 @@ setup(
     tests_require=['pytest'],
     entry_points={
         'console_scripts': [
-            'turtlebot_flex_planner_sm = flex_nav_turtlebot2_flexbe_behaviors.turtlebot_flex_planner_sm',
-            'turtlebot_multi_level_flex_planner_sm = flex_nav_turtlebot2_flexbe_behaviors.turtlebot_multi_level_flex_planner_sm',
-            'turtlebot_simple_recovery_sm = flex_nav_turtlebot2_flexbe_behaviors.turtlebot_simple_recovery_sm',
         ],
     },
 )

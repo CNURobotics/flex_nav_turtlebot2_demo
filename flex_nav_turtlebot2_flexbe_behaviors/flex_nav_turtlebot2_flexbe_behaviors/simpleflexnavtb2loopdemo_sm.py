@@ -20,15 +20,15 @@ from flex_nav_flexbe_states.timed_twist_state import TimedTwistState
 Created on Mon Oct 25 2021
 @author: Josh Zutell
 '''
-class SimpleFlexNavLoopDemoSM(Behavior):
+class SimpleFlexNavTB2LoopDemoSM(Behavior):
 	'''
-	A simple demo using Flexible Navigation states to navigation a TurtleBot3 in a loop
+	A simple demo using Flexible Navigation states to navigation a TurtleBot 2 in a loop
 	'''
 
 
 	def __init__(self, node):
-		super(SimpleFlexNavLoopDemoSM, self).__init__()
-		self.name = 'SimpleFlexNavLoopDemo'
+		super(SimpleFlexNavTB2LoopDemoSM, self).__init__()
+		self.name = 'SimpleFlexNavTB2LoopDemo'
 
 		# parameters of this behavior
 

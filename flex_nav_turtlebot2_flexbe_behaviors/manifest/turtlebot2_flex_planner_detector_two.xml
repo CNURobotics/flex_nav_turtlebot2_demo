@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<behavior name="Turtlebot 2 Flex Planner Detector Two">
+
+	<executable package_path="flex_nav_turtlebot2_flexbe_behaviors.turtlebot2_flex_planner_detector_two_sm" class="Turtlebot2FlexPlannerDetectorTwoSM" />
+	<tagstring>Flex_Nav</tagstring>
+	<author>Josh Zutell, David Conner</author>
+	<date>Sat April 16 2022</date>
+	<description>
+		Uses Flexible Navigation to control the Turtlebot 2 robot with Ball Detector and Pre-planned route
+	</description>
+
+
+	<!-- Contained Behaviors -->
+
+	<!-- Available Parameters -->
+
+</behavior>

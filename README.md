@@ -79,7 +79,8 @@ ros2 run flexbe_app nwjs_install
 A number of start up scripts are provided in `flex_nav_turtlebot2_bringup`
 
 
-For hardware demonstration:
+### For hardware demonstration:
+
     <pre>
     export USE_SIM_TIME=False
     ros2 run flex_nav_turtlebot2_bringup hw-tmux
@@ -93,7 +94,8 @@ For hardware demonstration:
     For OCS, either `ocs-tmux` or `launch-ocs` bash script is available.
 
 
-For basic simulation demonstration,
+### For basic simulation demonstration:
+
     <pre>
     export USE_SIM_TIME=True
     ros2 run flex_nav_turtlebot2_bringup launch-sim  
@@ -103,12 +105,41 @@ For basic simulation demonstration,
 
     These may be started up on a single computer, or multiple computers if using networked simulation.
 
-There are also associated `tmux` versions if preferred.
+There are also associated `tmux` versions for simulation if preferred.
 
->NOTE: With both tmux and launch scripts, the terminal will close if the started
+>NOTE: With both `tmux` and `launch` scripts, the terminal will close if the started
 > nodes completely shutdown. Manually starting each script may be warranted for debugging.
 
-These scripts also make use of the following environment variables:
+### Manual start up of simulation demonstration:
+
+    To launch in separate terminals, use these commands in each terminal:
+
+    <pre>
+    # Simulation
+    ros2 launch chris_world_models ${WORLD_MODEL:=gazebo_creech_world}.launch.py use_sim_time:=True
+    ros2 launch chris_ros_turtlebot2 turtlebot_gazebo.launch.py use_sim_time:=True
+    
+    # Onboard
+    # To use other (e.g. amcl or cartographer, set LOCALIZATION environment variable (e.g. export LOCALIZATION=amcl)
+    ros2 launch flex_nav_turtlebot2_bringup "${LOCALIZATION:=slam}.launch.py" use_sim_time:=True
+    ros2 launch flex_nav_turtlebot2_bringup ${FLEX_NAV_SETUP:=flex}.launch.py use_sim_time:=True
+    ros2 launch flexbe_onboard behavior_onboard.launch.py use_sim_time:=True
+
+    # Operator Control Station (OCS)
+    ros2 launch flex_nav_turtlebot2_bringup rviz.launch.py use_sim_time:=True
+    ros2 run flexbe_mirror behavior_mirror_sm --ros-args --remap name:="behavior_mirror"
+    ros2 run flexbe_widget be_launcher --ros-args --remap name:="behavior_launcher"
+    ros2 run flexbe_app run_app --ros-args --remap name:="flexbe_app" use_sim_time:=True
+
+    # Optional depending on selected behavior 
+    ros2 launch flex_nav_turtlebot2_bringup paths_by_name.launch.py use_sim_time:=True
+    ros2 launch simple_ball_detector ball_detector.launch.py use_sim_time:=True
+
+    </pre>
+    
+-----
+
+All of these scripts also make use of the following environment variables:
 <pre>
 export WORLD_MODEL=
 export LOCALIZATION=slam # (e.g. slam, amcl, or cartographer)
@@ -123,7 +154,10 @@ install process [CHRISLab Install] .
 The following directions are for a simple demonstration of Flexible Navigation
 
 
-### Drop some balls at random locations in simulation
+### Optional: Drop some balls at random locations in simulation
+
+The "Detector" behaviors look for balls in the scene.  
+To add some to simulation at random locations use:
 
  * `ros2 launch chris_world_models creech_random_balls.launch.py`
 
@@ -201,8 +235,8 @@ After OCS startup, all control is through the FlexBE App operator interface and 
 
 * First load the desired behavior through the `FlexBE Behavior Dashboard` tab.
   * The behavior should match the flex launch started above.
-    * `flex.launch` --> `Turtlebot Flex Planner`
-    * `flex_multi_level.launch` --> `Turtlebot Multi Level Flex Planner`
+    * `flex.launch` --> `Turtlebot2 Flex Planner`
+    * `flex_multi_level.launch` --> `Turtlebot2 Multi Level Flex Planner`
 
 * Examine (but don't modify yet!) the behavior using the `Statemachine Editor` button on FlexBE app
   * Click on a state to see the configurable parameters

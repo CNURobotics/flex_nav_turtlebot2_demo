@@ -10,7 +10,6 @@
 from flexbe_core import Behavior, Autonomy, OperatableStateMachine, ConcurrencyContainer, PriorityContainer, Logger
 from flex_nav_flexbe_states.clear_costmaps_state import ClearCostmapsState
 from flex_nav_flexbe_states.follow_path_state import FollowPathState
-from flex_nav_flexbe_states.follow_topic_state import FollowTopicState
 from flex_nav_flexbe_states.get_path_state import GetPathState
 from flex_nav_flexbe_states.get_pose_state import GetPoseState
 from flexbe_states.log_state import LogState
@@ -25,19 +24,15 @@ from flexbe_states.operator_decision_state import OperatorDecisionState
 Created on Sat Jan 15 2022
 @author: Josh Zutell
 '''
-class TurtlebotFourLevelFlexPlannerSM(Behavior):
+class Turtlebot2FlexPlannerSM(Behavior):
 	'''
-	Uses Flexible Navigation to control the Turtlebot robot with 4-level planning.
-high-level: Map only
-first-mid-level: Smaller map area with sensors
-second-mid-level: Receives map from first-mid-level and performs another planning
-low-level: sensors only
+	Uses Flexible Navigation to control the Turtlebot 2 robot
 	'''
 
 
 	def __init__(self, node):
-		super(TurtlebotFourLevelFlexPlannerSM, self).__init__()
-		self.name = 'Turtlebot Four-Level Flex Planner'
+		super(Turtlebot2FlexPlannerSM, self).__init__()
+		self.name = 'Turtlebot 2 Flex Planner'
 
 		# parameters of this behavior
 
@@ -48,7 +43,6 @@ low-level: sensors only
 		Logger.initialize(node)
 		ClearCostmapsState.initialize_ros(node)
 		FollowPathState.initialize_ros(node)
-		FollowTopicState.initialize_ros(node)
 		GetPathState.initialize_ros(node)
 		GetPoseState.initialize_ros(node)
 		LogState.initialize_ros(node)
@@ -64,47 +58,13 @@ low-level: sensors only
 
 
 	def create(self):
-		# x:866 y:304, x:1163 y:18
+		# x:943 y:286, x:1073 y:20
 		_state_machine = OperatableStateMachine(outcomes=['finished', 'failed'])
 
 		# Additional creation code can be added inside the following tags
 		# [MANUAL_CREATE]
 
 		# [/MANUAL_CREATE]
-
-		# x:329 y:46, x:322 y:96, x:323 y:154, x:386 y:222, x:392 y:280, x:396 y:337, x:530 y:362, x:529 y:429, x:529 y:493, x:64 y:596, x:133 y:596, x:196 y:597
-		_sm_container_0 = ConcurrencyContainer(outcomes=['finished', 'failed', 'canceled'], input_keys=['plan'], conditions=[
-										('finished', [('MidLevel', 'done')]),
-										('failed', [('MidLevel', 'failed')]),
-										('canceled', [('MidLevel', 'canceled')]),
-										('finished', [('LowMidLevel', 'done')]),
-										('failed', [('LowMidLevel', 'failed')]),
-										('canceled', [('LowMidLevel', 'canceled')]),
-										('finished', [('LowLevel', 'done')]),
-										('failed', [('LowLevel', 'failed')]),
-										('canceled', [('LowLevel', 'canceled')])
-										])
-
-		with _sm_container_0:
-			# x:75 y:90
-			OperatableStateMachine.add('MidLevel',
-										FollowPathState(topic="mid_level_planner"),
-										transitions={'done': 'finished', 'failed': 'failed', 'canceled': 'canceled'},
-										autonomy={'done': Autonomy.Off, 'failed': Autonomy.Off, 'canceled': Autonomy.Off},
-										remapping={'plan': 'plan'})
-
-			# x:140 y:276
-			OperatableStateMachine.add('LowMidLevel',
-										FollowTopicState(planner_topic="mid_level_planner/plan", controller_topic="low_mid_level_planner"),
-										transitions={'done': 'finished', 'failed': 'failed', 'canceled': 'canceled'},
-										autonomy={'done': Autonomy.Off, 'failed': Autonomy.Off, 'canceled': Autonomy.Off})
-
-			# x:321 y:407
-			OperatableStateMachine.add('LowLevel',
-										FollowTopicState(planner_topic="low_mid_level_planner/plan", controller_topic="low_level_planner"),
-										transitions={'done': 'finished', 'failed': 'failed', 'canceled': 'canceled'},
-										autonomy={'done': Autonomy.Off, 'failed': Autonomy.Off, 'canceled': Autonomy.Off})
-
 
 
 		with _state_machine:
@@ -114,23 +74,23 @@ low-level: sensors only
 										transitions={'done': 'Receive Goal', 'failed': 'failed'},
 										autonomy={'done': Autonomy.Off, 'failed': Autonomy.Off})
 
-			# x:461 y:325
-			OperatableStateMachine.add('Container',
-										_sm_container_0,
-										transitions={'finished': 'Log Success', 'failed': 'AutoReplan', 'canceled': 'Continue'},
-										autonomy={'finished': Autonomy.Inherit, 'failed': Autonomy.Inherit, 'canceled': Autonomy.Inherit},
-										remapping={'plan': 'plan'})
-
 			# x:435 y:146
 			OperatableStateMachine.add('Continue',
 										OperatorDecisionState(outcomes=["yes","no","clearcostmap"], hint="Continue planning to new goal?", suggestion="yes"),
 										transitions={'yes': 'Receive Goal', 'no': 'finished', 'clearcostmap': 'ClearCostmap'},
 										autonomy={'yes': Autonomy.High, 'no': Autonomy.Full, 'clearcostmap': Autonomy.Full})
 
-			# x:218 y:342
+			# x:435 y:299
+			OperatableStateMachine.add('Execute Path',
+										FollowPathState(topic="low_level_planner"),
+										transitions={'done': 'Log Success', 'failed': 'AutoReplan', 'canceled': 'Continue'},
+										autonomy={'done': Autonomy.Off, 'failed': Autonomy.Off, 'canceled': Autonomy.Off},
+										remapping={'plan': 'plan'})
+
+			# x:194 y:301
 			OperatableStateMachine.add('ExecutePlan',
 										OperatorDecisionState(outcomes=["yes","no"], hint="Execute the current plan?", suggestion="yes"),
-										transitions={'yes': 'Container', 'no': 'Continue'},
+										transitions={'yes': 'Execute Path', 'no': 'Continue'},
 										autonomy={'yes': Autonomy.High, 'no': Autonomy.Full})
 
 			# x:960 y:70
@@ -139,16 +99,16 @@ low-level: sensors only
 										transitions={'done': 'New Plan'},
 										autonomy={'done': Autonomy.Off})
 
-			# x:694 y:329
+			# x:708 y:293
 			OperatableStateMachine.add('Log Success',
 										LogState(text="Success!", severity=Logger.REPORT_HINT),
 										transitions={'done': 'Continue'},
 										autonomy={'done': Autonomy.Off})
 
-			# x:772 y:71
+			# x:728 y:65
 			OperatableStateMachine.add('New Plan',
 										GetPathState(planner_topic="high_level_planner"),
-										transitions={'planned': 'Container', 'empty': 'Receive Goal', 'failed': 'Continue'},
+										transitions={'planned': 'Execute Path', 'empty': 'Receive Goal', 'failed': 'Continue'},
 										autonomy={'planned': Autonomy.Off, 'empty': Autonomy.Off, 'failed': Autonomy.Off},
 										remapping={'goal': 'goal', 'plan': 'plan'})
 

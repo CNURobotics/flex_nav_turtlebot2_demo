@@ -15,8 +15,6 @@ from flex_nav_flexbe_states.get_path_by_name_state import GetPathByNameState
 from flex_nav_flexbe_states.get_path_state import GetPathState
 from flex_nav_flexbe_states.get_pose_state import GetPoseState
 from flex_nav_flexbe_states.rotate_angle_state import RotateAngleState
-from flex_nav_flexbe_states.set_pose_state import SetPoseState
-from flex_nav_flexbe_states.timed_stop_state import TimedStopState
 from flex_nav_flexbe_states.timed_twist_state import TimedTwistState
 from flexbe_states.log_state import LogState
 from flexbe_states.operator_decision_state import OperatorDecisionState
@@ -30,15 +28,15 @@ from flexbe_states.operator_decision_state import OperatorDecisionState
 Created on Sat April 16 2022
 @author: Josh Zutell, David Conner
 '''
-class TurtlebotFlexPlannerDetectorTwoSM(Behavior):
+class Turtlebot2FlexPlannerDetectorSM(Behavior):
     '''
-    Uses Flexible Navigation to control the Turtlebot robot with Ball Detector and Pre-planned route
+    Uses Flexible Navigation to control the Turtlebot 2 robot with Ball Detector and Pre-planned route
     '''
 
 
     def __init__(self, node):
-        super(TurtlebotFlexPlannerDetectorTwoSM, self).__init__()
-        self.name = 'Turtlebot Flex Planner Detector Two'
+        super(Turtlebot2FlexPlannerDetectorSM, self).__init__()
+        self.name = 'Turtlebot2 Flex Planner Detector'
 
         # parameters of this behavior
 
@@ -56,8 +54,6 @@ class TurtlebotFlexPlannerDetectorTwoSM(Behavior):
         LogState.initialize_ros(node)
         OperatorDecisionState.initialize_ros(node)
         RotateAngleState.initialize_ros(node)
-        SetPoseState.initialize_ros(node)
-        TimedStopState.initialize_ros(node)
         TimedTwistState.initialize_ros(node)
 
         # Additional initialization code can be added inside the following tags
@@ -102,8 +98,7 @@ class TurtlebotFlexPlannerDetectorTwoSM(Behavior):
             OperatableStateMachine.add('ball_detector',
                                         BallDetectorState(balls_topic='/ball_detector/balls', min_radius_pixels=-1.0),
                                         transitions={'unavailable': 'failed', 'invalid': 'failed', 'red_ball': 'red_ball', 'green_ball': 'other_ball', 'blue_ball': 'other_ball'},
-                                        autonomy={'unavailable': Autonomy.Off, 'invalid': Autonomy.Off, 'red_ball': Autonomy.Off, 'green_ball': Autonomy.Off, 'blue_ball': Autonomy.Off},
-                                        remapping={'ball_detected': 'ball_detected', 'goal': 'goal'})
+                                        autonomy={'unavailable': Autonomy.Off, 'invalid': Autonomy.Off, 'red_ball': Autonomy.Off, 'green_ball': Autonomy.Off, 'blue_ball': Autonomy.Off})
 
 
 
@@ -111,40 +106,27 @@ class TurtlebotFlexPlannerDetectorTwoSM(Behavior):
             # x:193 y:26
             OperatableStateMachine.add('ClearCostmap',
                                         ClearCostmapsState(costmap_topics=['high_level_planner/clear_costmap','low_level_planner/clear_costmap'], timeout=5.0),
-                                        transitions={'done': 'Continue', 'failed': 'failed'},
-                                        autonomy={'done': Autonomy.Off, 'failed': Autonomy.Off})
-
-            # x:963 y:441
-            OperatableStateMachine.add('CheckStop',
-                                        TimedStopState(timeout=0.5, cmd_topic='cmd_vel', odom_topic='odom', cmd_topic_stamped="cmd_vel_stamped"),
-                                        transitions={'done': 'Continue', 'failed': 'CheckStop'},
+                                        transitions={'done': 'Receive Goal', 'failed': 'failed'},
                                         autonomy={'done': Autonomy.Off, 'failed': Autonomy.Off})
 
             # x:462 y:389
             OperatableStateMachine.add('Container',
                                         _sm_container_0,
-                                        transitions={'finished': 'Log Success', 'failed': 'Continue', 'red_ball': 'saw_red', 'other_ball': 'saw_other_ball'},
+                                        transitions={'finished': 'Continue', 'failed': 'Continue', 'red_ball': 'saw_red', 'other_ball': 'saw_other_ball'},
                                         autonomy={'finished': Autonomy.Inherit, 'failed': Autonomy.Inherit, 'red_ball': Autonomy.Inherit, 'other_ball': Autonomy.Inherit},
                                         remapping={'plan': 'plan'})
 
-            # x:456 y:222
+            # x:435 y:146
             OperatableStateMachine.add('Continue',
-                                        OperatorDecisionState(outcomes=["yes","no","clearcostmap", "patrol", "home"], hint="Continue planning to new goal?", suggestion="yes"),
-                                        transitions={'yes': 'Receive Goal', 'no': 'finished', 'clearcostmap': 'ClearCostmap', 'patrol': 'PatrolPath', 'home': 'HomePose'},
-                                        autonomy={'yes': Autonomy.Full, 'no': Autonomy.Full, 'clearcostmap': Autonomy.Full, 'patrol': Autonomy.Full, 'home': Autonomy.Off})
+                                        OperatorDecisionState(outcomes=["yes","no","clearcostmap", "patrol"], hint="Continue planning to new goal?", suggestion="yes"),
+                                        transitions={'yes': 'Receive Goal', 'no': 'finished', 'clearcostmap': 'ClearCostmap', 'patrol': 'PatrolPath'},
+                                        autonomy={'yes': Autonomy.Full, 'no': Autonomy.Full, 'clearcostmap': Autonomy.Full, 'patrol': Autonomy.Full})
 
-            # x:200 y:396
+            # x:194 y:301
             OperatableStateMachine.add('ExecutePlan',
                                         OperatorDecisionState(outcomes=["yes","no"], hint="Execute the current plan?", suggestion="yes"),
                                         transitions={'yes': 'Container', 'no': 'Continue'},
                                         autonomy={'yes': Autonomy.High, 'no': Autonomy.Full})
-
-            # x:453 y:98
-            OperatableStateMachine.add('HomePose',
-                                        SetPoseState(position=[0.0, 0.0], angle=None, quaternion=None, frame_id='map'),
-                                        transitions={'done': 'Receive Path'},
-                                        autonomy={'done': Autonomy.Off},
-                                        remapping={'goal': 'goal'})
 
             # x:960 y:70
             OperatableStateMachine.add('Log Recovered',
@@ -152,7 +134,7 @@ class TurtlebotFlexPlannerDetectorTwoSM(Behavior):
                                         transitions={'done': 'New Plan'},
                                         autonomy={'done': Autonomy.Off})
 
-            # x:645 y:359
+            # x:744 y:355
             OperatableStateMachine.add('Log Success',
                                         LogState(text="Success!", severity=Logger.REPORT_HINT),
                                         transitions={'done': 'Continue'},
@@ -161,11 +143,11 @@ class TurtlebotFlexPlannerDetectorTwoSM(Behavior):
             # x:728 y:65
             OperatableStateMachine.add('New Plan',
                                         GetPathState(planner_topic="high_level_planner"),
-                                        transitions={'planned': 'Container', 'empty': 'Continue', 'failed': 'Continue'},
+                                        transitions={'planned': 'Container', 'empty': 'Receive Goal', 'failed': 'Continue'},
                                         autonomy={'planned': Autonomy.Off, 'empty': Autonomy.Off, 'failed': Autonomy.Off},
                                         remapping={'goal': 'goal', 'plan': 'plan'})
 
-            # x:234 y:484
+            # x:248 y:409
             OperatableStateMachine.add('PatrolPath',
                                         GetPathByNameState(action_server_name='get_path_by_name', path_name='creech_patrol'),
                                         transitions={'success': 'Container', 'empty': 'Continue', 'failed': 'Continue'},
@@ -179,7 +161,7 @@ class TurtlebotFlexPlannerDetectorTwoSM(Behavior):
                                         autonomy={'done': Autonomy.Low},
                                         remapping={'goal': 'goal'})
 
-            # x:150 y:298
+            # x:205 y:207
             OperatableStateMachine.add('Receive Path',
                                         GetPathState(planner_topic="high_level_planner"),
                                         transitions={'planned': 'ExecutePlan', 'empty': 'Continue', 'failed': 'Continue'},
@@ -200,14 +182,14 @@ class TurtlebotFlexPlannerDetectorTwoSM(Behavior):
 
             # x:750 y:599
             OperatableStateMachine.add('spin',
-                                        TimedTwistState(target_time=8, velocity=0.01, rotation_rate=0.628, cmd_topic='cmd_vel', cmd_topic_stamped=''),
-                                        transitions={'done': 'CheckStop'},
+                                        TimedTwistState(target_time=20, velocity=0.01, rotation_rate=0.628, cmd_topic='cmd_vel'),
+                                        transitions={'done': 'Continue'},
                                         autonomy={'done': Autonomy.Off})
 
             # x:745 y:484
             OperatableStateMachine.add('spin_right',
-                                        RotateAngleState(target_time=8.0, target_angle=-360.0, cmd_topic='/cmd_vel', odometry_topic='/odom', cmd_topic_stamped='cmd_vel_stamped'),
-                                        transitions={'done': 'CheckStop'},
+                                        RotateAngleState(target_time=20.0, target_angle=-360.0, cmd_topic='/cmd_vel', odometry_topic='/odom'),
+                                        transitions={'done': 'Continue'},
                                         autonomy={'done': Autonomy.Off})
 
             # x:875 y:162

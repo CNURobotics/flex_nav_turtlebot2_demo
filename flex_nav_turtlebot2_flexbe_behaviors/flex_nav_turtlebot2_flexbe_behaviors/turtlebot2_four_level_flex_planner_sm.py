@@ -9,7 +9,7 @@
 
 from flexbe_core import Behavior, Autonomy, OperatableStateMachine, ConcurrencyContainer, PriorityContainer, Logger
 from flex_nav_flexbe_states.clear_costmaps_state import ClearCostmapsState
-from flex_nav_flexbe_states.follow_planner_state import FollowPlannerState
+from flex_nav_flexbe_states.follow_path_state import FollowPathState
 from flex_nav_flexbe_states.follow_topic_state import FollowTopicState
 from flex_nav_flexbe_states.get_path_state import GetPathState
 from flex_nav_flexbe_states.get_pose_state import GetPoseState
@@ -25,18 +25,19 @@ from flexbe_states.operator_decision_state import OperatorDecisionState
 Created on Sat Jan 15 2022
 @author: Josh Zutell
 '''
-class TurtlebotMultiLevelFlexPlannerSM(Behavior):
+class Turtlebot2FourLevelFlexPlannerSM(Behavior):
 	'''
-	Uses Flexible Navigation to control the Turtlebot robot with 3-level planning.
-high-level: Map only
-mid-level: Smaller map area with sensors
-low-level: sensors only
+	Uses Flexible Navigation to control the Turtlebot 2 robot with 4-level planning.
+		high-level: Map only
+		first-mid-level: Smaller map area with sensors
+		second-mid-level: Receives map from first-mid-level and performs another planning
+		low-level: sensors only
 	'''
 
 
 	def __init__(self, node):
-		super(TurtlebotMultiLevelFlexPlannerSM, self).__init__()
-		self.name = 'Turtlebot Multi-Level Flex Planner'
+		super(Turtlebot2FourLevelFlexPlannerSM, self).__init__()
+		self.name = 'Turtlebot 2 Four-Level Flex Planner'
 
 		# parameters of this behavior
 
@@ -46,7 +47,7 @@ low-level: sensors only
 		PriorityContainer.initialize_ros(node)
 		Logger.initialize(node)
 		ClearCostmapsState.initialize_ros(node)
-		FollowPlannerState.initialize_ros(node)
+		FollowPathState.initialize_ros(node)
 		FollowTopicState.initialize_ros(node)
 		GetPathState.initialize_ros(node)
 		GetPoseState.initialize_ros(node)
@@ -63,7 +64,7 @@ low-level: sensors only
 
 
 	def create(self):
-		# x:880 y:312, x:1163 y:18
+		# x:866 y:304, x:1163 y:18
 		_state_machine = OperatableStateMachine(outcomes=['finished', 'failed'])
 
 		# Additional creation code can be added inside the following tags
@@ -71,27 +72,36 @@ low-level: sensors only
 
 		# [/MANUAL_CREATE]
 
-		# x:424 y:58, x:407 y:123, x:413 y:197, x:564 y:309, x:552 y:388, x:557 y:453, x:189 y:520, x:45 y:524, x:123 y:521
+		# x:329 y:46, x:322 y:96, x:323 y:154, x:386 y:222, x:392 y:280, x:396 y:337, x:530 y:362, x:529 y:429, x:529 y:493, x:64 y:596, x:133 y:596, x:196 y:597
 		_sm_container_0 = ConcurrencyContainer(outcomes=['finished', 'failed', 'canceled'], input_keys=['plan'], conditions=[
 										('finished', [('MidLevel', 'done')]),
-										('finished', [('LowLevel', 'done')]),
-										('canceled', [('MidLevel', 'canceled')]),
 										('failed', [('MidLevel', 'failed')]),
+										('canceled', [('MidLevel', 'canceled')]),
+										('finished', [('LowMidLevel', 'done')]),
+										('failed', [('LowMidLevel', 'failed')]),
+										('canceled', [('LowMidLevel', 'canceled')]),
+										('finished', [('LowLevel', 'done')]),
 										('failed', [('LowLevel', 'failed')]),
 										('canceled', [('LowLevel', 'canceled')])
 										])
 
 		with _sm_container_0:
-			# x:109 y:63
+			# x:75 y:90
 			OperatableStateMachine.add('MidLevel',
-										FollowPlannerState(topic="mid_level_planner"),
+										FollowPathState(topic="mid_level_planner"),
 										transitions={'done': 'finished', 'failed': 'failed', 'canceled': 'canceled'},
 										autonomy={'done': Autonomy.Off, 'failed': Autonomy.Off, 'canceled': Autonomy.Off},
 										remapping={'plan': 'plan'})
 
-			# x:299 y:331
+			# x:140 y:276
+			OperatableStateMachine.add('LowMidLevel',
+										FollowTopicState(planner_topic="mid_level_planner/plan", controller_topic="low_mid_level_planner"),
+										transitions={'done': 'finished', 'failed': 'failed', 'canceled': 'canceled'},
+										autonomy={'done': Autonomy.Off, 'failed': Autonomy.Off, 'canceled': Autonomy.Off})
+
+			# x:321 y:407
 			OperatableStateMachine.add('LowLevel',
-										FollowTopicState(planner_topic="mid_level_planner/plan", controller_topic="low_level_planner"),
+										FollowTopicState(planner_topic="low_mid_level_planner/plan", controller_topic="low_level_planner"),
 										transitions={'done': 'finished', 'failed': 'failed', 'canceled': 'canceled'},
 										autonomy={'done': Autonomy.Off, 'failed': Autonomy.Off, 'canceled': Autonomy.Off})
 
@@ -104,7 +114,7 @@ low-level: sensors only
 										transitions={'done': 'Receive Goal', 'failed': 'failed'},
 										autonomy={'done': Autonomy.Off, 'failed': Autonomy.Off})
 
-			# x:446 y:337
+			# x:461 y:325
 			OperatableStateMachine.add('Container',
 										_sm_container_0,
 										transitions={'finished': 'Log Success', 'failed': 'AutoReplan', 'canceled': 'Continue'},
@@ -129,7 +139,7 @@ low-level: sensors only
 										transitions={'done': 'New Plan'},
 										autonomy={'done': Autonomy.Off})
 
-			# x:703 y:336
+			# x:694 y:329
 			OperatableStateMachine.add('Log Success',
 										LogState(text="Success!", severity=Logger.REPORT_HINT),
 										transitions={'done': 'Continue'},
