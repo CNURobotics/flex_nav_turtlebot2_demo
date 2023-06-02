@@ -7,21 +7,18 @@
   <author>David Conner</author>
   <maintainer email="robotics@cnu.edu">David Conner</maintainer>
   <license>BSD</license>
-  <url type="bugtracker">https://github.com/FlexBE/flex_nav_turtlebot2/issues</url>
-  <url type="repository">https://github.com/FlexBE/flex_nav_turtlebot2</url>
-  <url type="website">https://github.com/FlexBE/flex_nav_turtlebot2</url>
+  <url type="bugtracker">https://github.com/CNURobotics/flex_nav_turtlebot2_demo/issues</url>
+  <url type="repository">https://github.com/CNURobotics/flex_nav_turtlebot2_demo</url>
+  <url type="website">https://github.com/CNURobotics/flex_nav_turtlebot2_demo</url>
 
   <buildtool_depend>ament_cmake</buildtool_depend>
 
-  <run_depend>kobuki_ros</run_depend>
-  <run_depend>kobuki_ros_interfaces</run_depend>
-
+  <run_depend>chris_ros_turtlebot2</run_depend>
   <run_depend>flexible_navigation</run_depend>
-  <run_depend>turtlebot2</run_depend>
-  <run_depend>turtlebot2-gazebo</run_depend>
   <run_depend>flex_nav_turtlebot2_flexbe_behaviors</run_depend>
   <run_depend>flex_nav_turtlebot2_bringup</run_depend>
-  <run_depend>chris_ros_turtlebot2</run_depend>
+  <run_depend>kobuki_ros</run_depend>
+  <run_depend>kobuki_ros_interfaces</run_depend>
 
   <export>
     <build_type>ament_cmake</build_type>
