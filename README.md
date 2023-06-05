@@ -81,27 +81,30 @@ A number of start up scripts are provided in `flex_nav_turtlebot2_bringup`
 
 ### For hardware demonstration:
 
-    <pre>
+<pre>
     export USE_SIM_TIME=False
     ros2 run flex_nav_turtlebot2_bringup hw-tmux
     ros2 run flex_nav_turtlebot2_bringup onboard-tmux
-    </pre>
+</pre>
+
     And on OCS computer,
-    <pre>
+
+<pre>
     ros2 run flex_nav_turtlebot2_bringup ocs-tmux
-    </pre>
+</pre>
+
     For onboard hw, the `tmux` is preferred.
     For OCS, either `ocs-tmux` or `launch-ocs` bash script is available.
 
 
 ### For basic simulation demonstration:
 
-    <pre>
+<pre>
     export USE_SIM_TIME=True
     ros2 run flex_nav_turtlebot2_bringup launch-sim  
     ros2 run flex_nav_turtlebot2_bringup launch-onboard
     ros2 run flex_nav_turtlebot2_bringup launch-ocs  
-    </pre>
+</pre>
 
     These may be started up on a single computer, or multiple computers if using networked simulation.
 
@@ -114,7 +117,7 @@ There are also associated `tmux` versions for simulation if preferred.
 
     To launch in separate terminals, use these commands in each terminal:
 
-    <pre>
+<pre>
     # Simulation
     ros2 launch chris_world_models ${WORLD_MODEL:=gazebo_creech_world}.launch.py use_sim_time:=True
     ros2 launch chris_ros_turtlebot2 turtlebot_gazebo.launch.py use_sim_time:=True
@@ -134,18 +137,33 @@ There are also associated `tmux` versions for simulation if preferred.
     # Optional depending on selected behavior 
     ros2 launch flex_nav_turtlebot2_bringup paths_by_name.launch.py use_sim_time:=True
     ros2 launch simple_ball_detector ball_detector.launch.py use_sim_time:=True
-
-    </pre>
+</pre>
     
+
+>  Currently. the `FLEX_NAV_SETUP` only works with 1 as described above.  
+> Drop the `.py` from `launch.py` if using 
+
+<pre>
+ros2 launch flex_nav_turtlebot2_bringup flex_multi_level.launch use_sim_time:=True
+</pre>
+
+or 
+
+<pre>
+ros2 launch flex_nav_turtlebot2_bringup flex_four__level.launch use_sim_time:=True
+</pre>
+
+> Until we fix the launch files to new style.
+
 -----
 
 All of these scripts also make use of the following environment variables:
 <pre>
-export WORLD_MODEL=
-export LOCALIZATION=slam # (e.g. slam, amcl, or cartographer)
-export USE_SIM_TIME=true # (or false as appropriate)
-export FLEX_NAV_SETUP=flex # (or flex_multi_level)
-export WORLD_MODEL=gazebo_creech_world #( if not set by launch, see the `chris_world_models` package for more world model setups.)
+    export WORLD_MODEL=
+    export LOCALIZATION=slam # (e.g. slam, amcl, or cartographer)
+    export USE_SIM_TIME=true # (or false as appropriate)
+    export FLEX_NAV_SETUP=flex # (or flex_multi_level)
+    export WORLD_MODEL=gazebo_creech_world #( if not set by launch, see the `chris_world_models` package for more world model setups.)
 </pre>
 
 Typically the `setup.bash` is created by the setup script created during our standard
