@@ -140,7 +140,7 @@ There are also associated `tmux` versions for simulation if preferred.
 </pre>
     
 
->  Currently. the `FLEX_NAV_SETUP` only works with 1 as described above.  
+>  Currently. the `FLEX_NAV_SETUP` only works with `flex` as described above.  
 > Drop the `.py` from `launch.py` if using 
 
 <pre>
@@ -154,6 +154,10 @@ ros2 launch flex_nav_turtlebot2_bringup flex_four__level.launch use_sim_time:=Tr
 </pre>
 
 > Until we fix the launch files to new style.
+
+> Note: If using `amcl` for localization, you will need to manually start the `map_server` for now.
+> Do this last as Humble and cyclone DDS seems to have issue latching the map topic.
+> e.g., `ros2 launch chris_world_models creech_map_050_server.launch.py`
 
 -----
 
