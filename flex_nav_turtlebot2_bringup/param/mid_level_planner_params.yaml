@@ -12,7 +12,7 @@ mid_level_planner:
       allow_unknown: true
       tolerance: 0.125
       use_astar: false
-      use_final_approach_orientation: true
+      use_final_approach_orientation: false # Use defined goal orientation at final pose
 
 mid_level_planner_rclcpp_node:
   ros__parameters:
