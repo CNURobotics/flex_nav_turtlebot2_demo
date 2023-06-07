@@ -155,9 +155,14 @@ ros2 launch flex_nav_turtlebot2_bringup flex_four__level.launch use_sim_time:=Tr
 
 > Until we fix the launch files to new style.
 
+----
+
 > Note: If using `amcl` for localization, you will need to manually start the `map_server` for now.
-> Do this last as Humble and cyclone DDS seems to have issue latching the map topic.
+> The map server publishes the known map that you are working with.
+
 > e.g., `ros2 launch chris_world_models creech_map_050_server.launch.py`
+
+> Do this before starting `amcl` localization, which will activate the map server by default.
 
 -----
 
