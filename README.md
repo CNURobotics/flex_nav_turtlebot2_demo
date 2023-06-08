@@ -125,7 +125,7 @@ There are also associated `tmux` versions for simulation if preferred.
     # Onboard
     # To use other (e.g. amcl or cartographer, set LOCALIZATION environment variable (e.g. export LOCALIZATION=amcl)
     ros2 launch flex_nav_turtlebot2_bringup "${LOCALIZATION:=slam}.launch.py" use_sim_time:=True
-    ros2 launch flex_nav_turtlebot2_bringup ${FLEX_NAV_SETUP:=flex}.launch.py use_sim_time:=True
+    ros2 launch flex_nav_turtlebot2_bringup ${FLEX_NAV_SETUP:=fake}.launch.py use_sim_time:=True
     ros2 launch flexbe_onboard behavior_onboard.launch.py use_sim_time:=True
 
     # Operator Control Station (OCS)
@@ -162,18 +162,20 @@ ros2 launch flex_nav_turtlebot2_bringup flex_four__level.launch use_sim_time:=Tr
 
 > e.g., `ros2 launch chris_world_models creech_map_050_server.launch.py`
 
-> Do this before starting `amcl` localization, which will activate the map server by default.
+> Do this before starting `amcl` localization, which will activate the map server lifecycle by default.
 
 -----
 
 All of these scripts also make use of the following environment variables:
 <pre>
     export WORLD_MODEL=
-    export LOCALIZATION=slam # (e.g. slam, amcl, or cartographer)
+    export LOCALIZATION=fake # (e.g. fake, slam, amcl, or cartographer)
     export USE_SIM_TIME=true # (or false as appropriate)
     export FLEX_NAV_SETUP=flex # (or flex_multi_level)
     export WORLD_MODEL=gazebo_creech_world #( if not set by launch, see the `chris_world_models` package for more world model setups.)
 </pre>
+
+By default we are using the `fake` localization provided by `chris_ros_turtlebot2` for testing.
 
 Typically the `setup.bash` is created by the setup script created during our standard
 install process [CHRISLab Install] .
@@ -242,7 +244,7 @@ Then start one (and only one) of the following:
 
 or
 
-`ros2 launch flex_nav_turtlebot2_bringup flex_multi_level.launch.py`
+`ros2 launch flex_nav_turtlebot2_bringup flex_multi_level.launch`  *Not `.py` for now
  * This starts the planning and control nodes.
  * This version uses a 3-level planner as a demonstration.
   * The high-level planner is based only on the static map
