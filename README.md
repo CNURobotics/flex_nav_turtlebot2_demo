@@ -82,15 +82,15 @@ A number of start up scripts are provided in `flex_nav_turtlebot2_bringup`
 ### For hardware demonstration:
 
 <pre>
-    export USE_SIM_TIME=False
-    ros2 run flex_nav_turtlebot2_bringup hw-tmux
-    ros2 run flex_nav_turtlebot2_bringup onboard-tmux
+export USE_SIM_TIME=False
+ros2 run flex_nav_turtlebot2_bringup hw-tmux
+ros2 run flex_nav_turtlebot2_bringup onboard-tmux
 </pre>
 
     And on OCS computer,
 
 <pre>
-    ros2 run flex_nav_turtlebot2_bringup ocs-tmux
+ros2 run flex_nav_turtlebot2_bringup ocs-tmux
 </pre>
 
     For onboard hw, the `tmux` is preferred.
@@ -100,10 +100,10 @@ A number of start up scripts are provided in `flex_nav_turtlebot2_bringup`
 ### For basic simulation demonstration:
 
 <pre>
-    export USE_SIM_TIME=True
-    ros2 run flex_nav_turtlebot2_bringup launch-sim  
-    ros2 run flex_nav_turtlebot2_bringup launch-onboard
-    ros2 run flex_nav_turtlebot2_bringup launch-ocs  
+export USE_SIM_TIME=True
+ros2 run flex_nav_turtlebot2_bringup launch-sim  
+ros2 run flex_nav_turtlebot2_bringup launch-onboard
+ros2 run flex_nav_turtlebot2_bringup launch-ocs  
 </pre>
 
     These may be started up on a single computer, or multiple computers if using networked simulation.
@@ -118,27 +118,27 @@ There are also associated `tmux` versions for simulation if preferred.
     To launch in separate terminals, use these commands in each terminal:
 
 <pre>
-    # Simulation
-    ros2 launch chris_world_models ${WORLD_MODEL:=gazebo_creech_world}.launch.py use_sim_time:=True
-    ros2 launch chris_ros_turtlebot2 turtlebot_gazebo.launch.py use_sim_time:=True
-    
-    # Onboard
-    # To use other (e.g. amcl or cartographer, set LOCALIZATION environment variable (e.g. export LOCALIZATION=amcl)
-    ros2 launch flex_nav_turtlebot2_bringup "${LOCALIZATION:=slam}.launch.py" use_sim_time:=True
-    ros2 launch flex_nav_turtlebot2_bringup ${FLEX_NAV_SETUP:=fake}.launch.py use_sim_time:=True
-    ros2 launch flexbe_onboard behavior_onboard.launch.py use_sim_time:=True
+# Simulation
+ros2 launch chris_world_models ${WORLD_MODEL:=gazebo_creech_world}.launch.py use_sim_time:=True
+ros2 launch chris_ros_turtlebot2 turtlebot_gazebo.launch.py use_sim_time:=True
 
-    # Operator Control Station (OCS)
-    ros2 launch flex_nav_turtlebot2_bringup rviz.launch.py use_sim_time:=True
-    ros2 run flexbe_mirror behavior_mirror_sm --ros-args --remap name:="behavior_mirror"
-    ros2 run flexbe_widget be_launcher --ros-args --remap name:="behavior_launcher"
-    ros2 run flexbe_app run_app --ros-args --remap name:="flexbe_app" use_sim_time:=True
+# Onboard
+# To use other (e.g. amcl or cartographer, set LOCALIZATION environment variable (e.g. export LOCALIZATION=amcl)
+ros2 launch flex_nav_turtlebot2_bringup "${LOCALIZATION:=slam}.launch.py" use_sim_time:=True
+ros2 launch flex_nav_turtlebot2_bringup ${FLEX_NAV_SETUP:=fake}.launch.py use_sim_time:=True
+ros2 launch flexbe_onboard behavior_onboard.launch.py use_sim_time:=True
 
-    # Optional depending on selected behavior 
-    ros2 launch flex_nav_turtlebot2_bringup paths_by_name.launch.py use_sim_time:=True
-    ros2 launch simple_ball_detector ball_detector.launch.py use_sim_time:=True
+# Operator Control Station (OCS)
+ros2 launch flex_nav_turtlebot2_bringup rviz.launch.py use_sim_time:=True
+ros2 run flexbe_mirror behavior_mirror_sm --ros-args --remap name:="behavior_mirror"
+ros2 run flexbe_widget be_launcher --ros-args --remap name:="behavior_launcher"
+ros2 run flexbe_app run_app --ros-args --remap name:="flexbe_app" use_sim_time:=True
+
+# Optional depending on selected behavior 
+ros2 launch flex_nav_turtlebot2_bringup paths_by_name.launch.py use_sim_time:=True
+ros2 launch simple_ball_detector ball_detector.launch.py use_sim_time:=True
 </pre>
-    
+
 
 >  Currently. the `FLEX_NAV_SETUP` only works with `flex` as described above.  
 > Drop the `.py` from `launch.py` if using 
@@ -168,11 +168,11 @@ ros2 launch flex_nav_turtlebot2_bringup flex_four__level.launch use_sim_time:=Tr
 
 All of these scripts also make use of the following environment variables:
 <pre>
-    export WORLD_MODEL=
-    export LOCALIZATION=fake # (e.g. fake, slam, amcl, or cartographer)
-    export USE_SIM_TIME=true # (or false as appropriate)
-    export FLEX_NAV_SETUP=flex # (or flex_multi_level)
-    export WORLD_MODEL=gazebo_creech_world #( if not set by launch, see the `chris_world_models` package for more world model setups.)
+export WORLD_MODEL=
+export LOCALIZATION=fake # (e.g. fake, slam, amcl, or cartographer)
+export USE_SIM_TIME=true # (or false as appropriate)
+export FLEX_NAV_SETUP=flex # (or flex_multi_level)
+export WORLD_MODEL=gazebo_creech_world #( if not set by launch, see the `chris_world_models` package for more world model setups.)
 </pre>
 
 By default we are using the `fake` localization provided by `chris_ros_turtlebot2` for testing.
