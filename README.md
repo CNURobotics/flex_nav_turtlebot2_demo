@@ -87,14 +87,14 @@ ros2 run flex_nav_turtlebot2_bringup hw-tmux
 ros2 run flex_nav_turtlebot2_bringup onboard-tmux
 </pre>
 
-    And on OCS computer,
+And on OCS computer,
 
 <pre>
 ros2 run flex_nav_turtlebot2_bringup ocs-tmux
 </pre>
 
-    For onboard hw, the `tmux` is preferred.
-    For OCS, either `ocs-tmux` or `launch-ocs` bash script is available.
+For onboard hw, the `tmux` is preferred.
+For OCS, either `ocs-tmux` or `launch-ocs` bash script is available.
 
 
 ### For basic simulation demonstration:
@@ -106,7 +106,7 @@ ros2 run flex_nav_turtlebot2_bringup launch-onboard
 ros2 run flex_nav_turtlebot2_bringup launch-ocs  
 </pre>
 
-    These may be started up on a single computer, or multiple computers if using networked simulation.
+These may be started up on a single computer, or multiple computers if using networked simulation.
 
 There are also associated `tmux` versions for simulation if preferred.
 
@@ -115,7 +115,7 @@ There are also associated `tmux` versions for simulation if preferred.
 
 ### Manual start up of simulation demonstration:
 
-    To launch in separate terminals, use these commands in each terminal:
+To launch in separate terminals, use these commands in each terminal:
 
 <pre>
 # Simulation
@@ -206,17 +206,20 @@ To add some to simulation at random locations use:
   * `ros2 launch flex_nav_turtlebot2_bringup rviz.launch.py`
 
      This custom version adds the robot model, path, and global cost map to the default cartographer setup.
-         * A `Path` to the RViz display and set the topic to `/high_level_planner/plan`
-         * A `RobotModel` (uses the `/robot_description` topic)
-         * A `Map` showing the topic `/global_costmap/costmap`
-         * The `2D Goal Pose` publishes to the topic `/flex_nav_global/goal`
+
+    * A `Path` to the RViz display and set the topic to `/high_level_planner/plan`
+    * A `RobotModel` (uses the `/robot_description` topic)
+    * A `Map` showing the topic `/global_costmap/costmap`
+    * The `2D Goal Pose` publishes to the topic `/flex_nav_global/goal`
 
 ![RViz view](img/rviz_view.png)
 
 
   You may want to add a `Camera` pointing to the `/ball_detector/image` to see the marked balls.
   These are relatively small and may not be that useful.
+
   It might be better to periodically run:
+  
     * `ros2 run image_view image_saver --ros-args --remap image:=/ball_detector/image` or
     * `ros2 run image_view image_view --ros-args --remap image:=/ball_detector/image`  to see full size
 
