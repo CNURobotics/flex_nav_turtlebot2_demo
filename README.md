@@ -215,19 +215,19 @@ To add some to simulation at random locations use:
 ![RViz view](img/rviz_view.png)
 
 
-  You may want to add a `Camera` pointing to the `/ball_detector/image` to see the marked balls.
-  These are relatively small and may not be that useful.
+You may want to add a `Camera` pointing to the `/ball_detector/image` to see the marked balls.
+These are relatively small and may not be that useful.
 
-  It might be better to periodically run:
-  
-    * `ros2 run image_view image_saver --ros-args --remap image:=/ball_detector/image` or
-    * `ros2 run image_view image_view --ros-args --remap image:=/ball_detector/image`  to see full size
+To see full size, it might be better to periodically run:
+
+  * `ros2 run image_view image_saver --ros-args --remap image:=/ball_detector/image` or
+  * `ros2 run image_view image_view --ros-args --remap image:=/ball_detector/image`  
 
 
   You can also add a `MarkerArray` with the topic `/ball_detector/ball_markers`.
 
-  In the topic, you will need to set the Reliability to "Best Effort" for the topics to be received.
-  (ROS 2 defaults to publishing sensor data as "Best Effort" to save band width for large data systems.)
+In the topic, you will need to set the Reliability to "Best Effort" for the topics to be received.
+  * ROS 2 defaults to publishing sensor data as "Best Effort" to save band width for large data systems.
 
 ###
 
@@ -239,6 +239,7 @@ To add some to simulation at random locations use:
 > or you can manually start using:
 
 Then start one (and only one) of the following:
+
  `ros2 launch flex_nav_turtlebot2_bringup flex.launch.py`
  * This starts the planning and control nodes.
  * This version uses a 2-level planner as a demonstration.
