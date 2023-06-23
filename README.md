@@ -130,9 +130,9 @@ ros2 launch flexbe_onboard behavior_onboard.launch.py use_sim_time:=True
 
 # Operator Control Station (OCS)
 ros2 launch flex_nav_turtlebot2_bringup rviz.launch.py use_sim_time:=True
-ros2 run flexbe_mirror behavior_mirror_sm --ros-args --remap name:="behavior_mirror"
-ros2 run flexbe_widget be_launcher --ros-args --remap name:="behavior_launcher"
-ros2 run flexbe_app run_app --ros-args --remap name:="flexbe_app" use_sim_time:=True
+ros2 run flexbe_mirror behavior_mirror_sm --ros-args --remap __node:="behavior_mirror" -p use_sim_time:=True
+ros2 run flexbe_widget be_launcher --ros-args --remap __node:="behavior_launcher"-p use_sim_time:=True
+ros2 run flexbe_app run_app --ros-args --remap __node:="flexbe_app" -p use_sim_time:=True
 
 # Optional depending on selected behavior 
 ros2 launch flex_nav_turtlebot2_bringup paths_by_name.launch.py use_sim_time:=True
