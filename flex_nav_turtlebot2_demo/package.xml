@@ -1,6 +1,6 @@
 <package>
   <name>flex_nav_turtlebot2_demo</name>
-  <version>0.0.1</version>
+  <version>0.1.0</version>
   <description>
     Meta-package for Turtlebot2 specific Flexible Navigation System demonstration
   </description>

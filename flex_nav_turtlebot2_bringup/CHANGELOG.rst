@@ -2,8 +2,8 @@
 Changelog for package flex_nav_turtlebot2_bringup
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+0.1.0 (2023-07-25)
+------------------
 * cleanup
 * update launch files
 * update and rename behavior scripts
