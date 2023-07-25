@@ -15,80 +15,62 @@
 # Author: David Conner
 
 import os
-import yaml
 from ament_index_python.packages import get_package_share_directory
 from launch import LaunchDescription
 from launch.actions import DeclareLaunchArgument, SetEnvironmentVariable
 from launch_ros.actions import Node
 from launch.substitutions import LaunchConfiguration
-from nav2_common.launch import RewrittenYaml
 
 
 def generate_launch_description():
 
-    turtlebot_desc_dir = get_package_share_directory('flex_nav_turtlebot2_bringup')
-    use_sim_time = LaunchConfiguration('use_sim_time', default='true') # For simulations
+    use_sim_time = LaunchConfiguration('use_sim_time', default='true')  # For simulations
     autostart = LaunchConfiguration('autostart', default='true')
-    namespace = LaunchConfiguration('namespace')
+    namespace = LaunchConfiguration('namespace', default='')
 
     default_map_file_name = 'creech_map_050.yaml'
 
     default_map_package_prefix = os.path.join(get_package_share_directory('chris_world_models'), "maps")
 
-    map_yaml_file_path = LaunchConfiguration("map_yaml_file_path", 
-                                              default=os.path.join(default_map_package_prefix, default_map_file_name))
+    map_yaml_file_path = LaunchConfiguration("map_yaml_file_path",
+                                             default=os.path.join(default_map_package_prefix, default_map_file_name))
 
     localization_name = "amcl"  # Fake the standard package
     ms_name = 'map_server'      # Presumes map server launched earlier
 
-    lifecycle_nodes  = [ ms_name]
+    lifecycle_nodes = [ms_name]
 
     remappings = [('/tf', 'tf'),
                   ('/tf_static', 'tf_static')]
 
-    # param_substitutions = {
-    #     'use_sim_time': use_sim_time}
-    #
-    # params_file = os.path.join(turtlebot_desc_dir, 'param', 'fake.yaml')
-    # configured_params = RewrittenYaml(
-    #     source_file=params_file,
-    #     root_key=namespace,
-    #     param_rewrites=param_substitutions,
-    #     convert_types=True)
-
     return LaunchDescription([
         SetEnvironmentVariable('RCUTILS_LOGGING_BUFFERED_STREAM', '1'),
 
-        DeclareLaunchArgument(
-            'namespace', default_value='',
-            description='Top-level namespace'),
+        DeclareLaunchArgument('namespace', default_value=namespace,
+                              description='Top-level namespace'),
 
-        Node(
-            package='chris_ros_turtlebot2',
-            executable='fake_localization',
-            name=localization_name,
-            output='screen',
-            parameters=[], 
-            remappings=remappings),
+        Node(package='chris_ros_turtlebot2',
+             executable='fake_localization',
+             name=localization_name,
+             output='screen',
+             parameters=[],
+             remappings=remappings),
 
-        Node(
-            package='nav2_map_server',
-            executable='map_server',
-            name="map_server",
-            output='screen',
-            emulate_tty=True,  # https://github.com/ros2/launch/issues/188
-            parameters=[{'use_sim_time': use_sim_time,
-                         'yaml_filename': map_yaml_file_path}],
-            ),
+        Node(package='nav2_map_server',
+             executable='map_server',
+             name="map_server",
+             output='screen',
+             emulate_tty=True,  # https://github.com/ros2/launch/issues/188
+             parameters=[{'use_sim_time': use_sim_time,
+                          'yaml_filename': map_yaml_file_path}],
+             ),
 
-        Node(
-            package='nav2_lifecycle_manager',
-            executable='lifecycle_manager',
-            name='lifecycle_manager',
-            output='screen',
-            #emulate_tty=True,  # https://github.com/ros2/launch/issues/188
-            parameters=[{'use_sim_time': use_sim_time},
-                        {'autostart': autostart},
-                        {'node_names': lifecycle_nodes}])
-
+        Node(package='nav2_lifecycle_manager',
+             executable='lifecycle_manager',
+             name='lifecycle_manager',
+             output='screen',
+             # emulate_tty=True,  # https://github.com/ros2/launch/issues/188
+             parameters=[{'use_sim_time': use_sim_time},
+                         {'autostart': autostart},
+                         {'node_names': lifecycle_nodes}])
     ])

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<behavior name="Turtlebot 2 Four-Level Flex Planner">
+
+    <executable package_path="flex_nav_turtlebot2_flexbe_behaviors.turtlebot_2_four_level_flex_planner_sm" class="Turtlebot2FourLevelFlexPlannerSM" />
+    <tagstring>Flex_Nav</tagstring>
+    <author>Josh Zutell</author>
+    <date>Sat Jan 15 2022</date>
+    <description>
+        Uses Flexible Navigation to control the Turtlebot 2 robot with 4-level planning.
+        high-level: Map only
+        first-mid-level: Smaller map area with sensors
+        second-mid-level: Receives map from first-mid-level and performs another planning
+        low-level: sensors only
+
+    </description>
+
+
+    <!-- Contained Behaviors -->
+
+    <!-- Available Parameters -->
+
+</behavior>

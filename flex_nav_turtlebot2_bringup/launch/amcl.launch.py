@@ -15,7 +15,6 @@
 # Author: David Conner
 
 import os
-import yaml
 from ament_index_python.packages import get_package_share_directory
 from launch import LaunchDescription
 from launch.actions import DeclareLaunchArgument, SetEnvironmentVariable
@@ -27,14 +26,14 @@ from nav2_common.launch import RewrittenYaml
 def generate_launch_description():
 
     turtlebot_desc_dir = get_package_share_directory('flex_nav_turtlebot2_bringup')
-    use_sim_time = LaunchConfiguration('use_sim_time', default='true') # For simulations
+    use_sim_time = LaunchConfiguration('use_sim_time', default='true')  # For simulations
     autostart = LaunchConfiguration('autostart', default='true')
     namespace = LaunchConfiguration('namespace')
 
     amcl_name = "amcl"
     ms_name = 'map_server'  # Presumes map server launched earlier
 
-    lifecycle_nodes  = [ amcl_name, ms_name]
+    lifecycle_nodes = [amcl_name, ms_name]
 
     param_substitutions = {
         'use_sim_time': use_sim_time}

@@ -20,17 +20,15 @@ import os
 import yaml
 
 from launch import LaunchDescription
-from launch.actions import DeclareLaunchArgument
 from launch.substitutions import LaunchConfiguration
 from launch_ros.actions import Node
 from ament_index_python.packages import get_package_share_directory
 
 
 def generate_launch_description():
-    use_sim_time        = LaunchConfiguration('use_sim_time', default='true')
+    use_sim_time = LaunchConfiguration('use_sim_time', default='true')
     package_map_file = 'chris_world_models/maps/creech_map_050'
-    initial_pose        = LaunchConfiguration('use_sim_time', default='[0.0, 0.0, 0.0]')
-
+    initial_pose = LaunchConfiguration('use_sim_time', default='[0.0, 0.0, 0.0]')
 
     package_name = package_map_file.split("/")[0]
     package_dir = get_package_share_directory(package_name)
@@ -40,7 +38,7 @@ def generate_launch_description():
     bring_up_path = get_package_share_directory("flex_nav_turtlebot2_bringup")
     print("bring up: ", bring_up_path)
 
-    params_file = os.path.join( bring_up_path, 'param', 'localization.yaml')
+    params_file = os.path.join(bring_up_path, 'param', 'localization.yaml')
     print("Parameters file: ", params_file)
     with open(params_file, 'r') as f:
         localization_params = yaml.safe_load(f)['slam_toolbox']['ros__parameters']
@@ -50,7 +48,7 @@ def generate_launch_description():
     localization_params['map_start_pose'] = initial_pose
 
     start_sync_slam_toolbox_node = Node(
-        parameters=[localization_params ],
+        parameters=[localization_params],
         package='slam_toolbox',
         executable='localization_slam_toolbox_node',
         name='slam_toolbox',

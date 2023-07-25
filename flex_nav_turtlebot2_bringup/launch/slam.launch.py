@@ -31,10 +31,9 @@ def generate_launch_description():
         description='Use simulation/Gazebo clock')
 
     start_sync_slam_toolbox_node = Node(
-        parameters=[
-          get_package_share_directory("flex_nav_turtlebot2_bringup") + '/param/slam.yaml',
-          {'use_sim_time': use_sim_time}
-        ],
+        parameters=[get_package_share_directory("flex_nav_turtlebot2_bringup") + '/param/slam.yaml',
+                    {'use_sim_time': use_sim_time}
+                    ],
         package='slam_toolbox',
         executable='sync_slam_toolbox_node',
         name='slam_toolbox',

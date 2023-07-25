@@ -14,19 +14,15 @@
 #
 # Author: David Conner
 
-import os
-import yaml
-from ament_index_python.packages import get_package_share_directory
 from launch import LaunchDescription
-from launch.actions import DeclareLaunchArgument
 from launch_ros.actions import Node
 from launch.substitutions import LaunchConfiguration
 
 
 def generate_launch_description():
-    use_sim_time = LaunchConfiguration('use_sim_time', default='true') # Assume simulation for now
+    use_sim_time = LaunchConfiguration('use_sim_time', default='true')  # Assume simulation for now
 
-    lifecycle_nodes = [ "map_server"]
+    lifecycle_nodes = ["map_server"]
     autostart = True
 
     return LaunchDescription([
