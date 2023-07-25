@@ -25,7 +25,7 @@ Installation and Setup
 This package has a number of dependencies.  
 
 For CNU Robotics work, we typically use [CHRISLab Install] scripts to handle workspace
-setup, install, and build.  The below repos are including in the install scripts there.
+setup, install, and build.  The repos listed below are included in the [CHRISLab Install] scripts.
 
 
 Quickly skim this README before installing or running anything:
@@ -234,9 +234,10 @@ In the topic, you will need to set the Reliability to "Best Effort" for the topi
 
 ### Startup of Flexible Navigation
 
-> NOTE: These are normally started by the `hw-tmux`, or `launch-onboard` scripts described above.
-> Our scripts allow making the selection via the `FLEX_NAV_SETUP` environment variable described above,
-> or you can manually start using:
+> NOTE: This section is only applicable if using manual start up. 
+> Otherwise, the `hw-tmux` or `launch-onboard` scripts described above
+> have already started these scripts with the selection made via 
+> the `FLEX_NAV_SETUP` environment variable.
 
 Then start one (and only one) of the following:
 
@@ -271,7 +272,6 @@ or
 
 
  Flexible Navigation requires startup of planning and control nodes, as well as the FlexBE behavior engine and UI.
-
 
 
 ### FlexBE Operation
