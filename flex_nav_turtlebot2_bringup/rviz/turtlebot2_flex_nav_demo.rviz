@@ -72,8 +72,6 @@ Visualization Manager:
           Value: false
         camera_rgb_optical_frame:
           Value: false
-        camera_rgb_optical_frame_rotated:
-          Value: false
         caster_back_link:
           Value: false
         caster_front_link:
@@ -153,8 +151,7 @@ Visualization Manager:
                   camera_link:
                     {}
                   camera_rgb_optical_frame:
-                    camera_rgb_optical_frame_rotated:
-                      {}
+                    {}
                 caster_back_link:
                   {}
                 caster_front_link:
@@ -727,7 +724,7 @@ Visualization Manager:
         Durability Policy: Volatile
         History Policy: Keep Last
         Reliability Policy: Best Effort
-        Value: /camera_rotated/image_raw
+        Value: /camera/image_raw
       Value: true
       Visibility:
         Cartographer:
