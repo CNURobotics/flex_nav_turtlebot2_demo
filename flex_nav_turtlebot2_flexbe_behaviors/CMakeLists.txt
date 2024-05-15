@@ -24,6 +24,11 @@ install(DIRECTORY
   DESTINATION lib/${PROJECT_NAME}
 )
 
+install(PROGRAMS
+    bin/copy_behavior
+    DESTINATION lib/${PROJECT_NAME}
+)
+
 # Install Python modules
 ament_python_install_package(${PROJECT_NAME})
 

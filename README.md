@@ -40,7 +40,6 @@ This demonstration makes use of the following repositories:
 - git: {local-name: src/ball_detector,            uri: 'https://github.com/CNURobotics/ball_detector.git',            version: ros2-devel }
 - git: {local-name: src/chris_ros_turtlebot2,     uri: 'https://github.com/CNURobotics/chris_ros_turtlebot2.git',     version: ros2-devel }
 - git: {local-name: src/chris_world_models,       uri: 'https://github.com/CNURobotics/chris_world_models.git',       version: ros2-devel }
-- git: {local-name: src/image_pipeline,           uri: 'https://github.com/CNURobotics/image_pipeline.git',           version: humble-image-flip }
 - git: {local-name: src/openni2_camera,           uri: 'https://github.com/CNURobotics/openni2_camera.git',           version: astra-humble }
 </pre>
 
@@ -137,7 +136,7 @@ ros2 run flexbe_mirror behavior_mirror_sm --ros-args --remap __node:="behavior_m
 ros2 run flexbe_widget be_launcher --ros-args --remap __node:="behavior_launcher" -p use_sim_time:=True
 ros2 run flexbe_app run_app --ros-args --remap __node:="flexbe_app" -p use_sim_time:=True
 
-# Optional depending on selected behavior 
+# Optional depending on selected behavior
 ros2 launch flex_nav_turtlebot2_bringup paths_by_name.launch.py use_sim_time:=True
 ros2 launch simple_ball_detector ball_detector.launch.py use_sim_time:=True
 </pre>
@@ -147,7 +146,7 @@ ros2 launch simple_ball_detector ball_detector.launch.py use_sim_time:=True
 ros2 launch flex_nav_turtlebot2_bringup flex_multi_level.launch use_sim_time:=True
 </pre>
 
-or 
+or
 
 <pre>
 ros2 launch flex_nav_turtlebot2_bringup flex_four__level.launch use_sim_time:=True
@@ -234,9 +233,9 @@ In the topic, you will need to set the Reliability to "Best Effort" for the topi
 
 ### Startup of Flexible Navigation
 
-> NOTE: This section is only applicable if using manual start up. 
+> NOTE: This section is only applicable if using manual start up.
 > Otherwise, the `hw-tmux` or `launch-onboard` scripts described above
-> have already started these scripts with the selection made via 
+> have already started these scripts with the selection made via
 > the `FLEX_NAV_SETUP` environment variable.
 
 Then start one (and only one) of the following:
@@ -310,6 +309,10 @@ to refine the plans as the robot moves, and also monitors the Turtlebot bumper s
 The operator can terminate the execution early by selecting the appropriate transition in the `FlexBE UI`.  
 If this low level plan fails, the robot will request permission to initiate a recovery behavior;
 in `full` autonomy the system automatically initiates the recovery.
+
+> Note: The current set up uses the DWB controller for the local planner.
+> This has known [issues](https://github.com/ros-planning/navigation2/issues/3807) with
+> achieving the final pose, and will often fail to acheive the final pose.
 
 ## Publications
 
