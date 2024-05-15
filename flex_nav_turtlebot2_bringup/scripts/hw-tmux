@@ -13,7 +13,7 @@ tmux new-session -d -sturtlebot-hw -nturtlebot ros2 launch chris_ros_turtlebot2 
 sleep 3
 
 echo "Launch camera ..."
-tmux new-window -n camera -tturtlebot-hw ros2 launch chris_ros_turtlebot2 astra_bringup.launch.py use_sim_time:=${USE_SIM_TIME:=False}
+tmux new-window -n camera -tturtlebot-hw ros2 launch realsense2_camera rs_launch.py
 sleep 1
 
 if ${USE_SIM_TIME:=False} ; then
