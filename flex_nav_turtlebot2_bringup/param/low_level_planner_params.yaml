@@ -2,20 +2,21 @@ low_level_planner:
   ros__parameters:
     # controller server parameters (see Controller Server for more info)
     use_sim_time: False
+    velocity_stamp_publisher: "cmd_vel"  # Use TwistStamped
     controller_frequency: 20.0
     min_x_velocity_threshold: 0.001
-    min_y_velocity_threshold: 0.5
+    min_y_velocity_threshold: 0.001
     min_theta_velocity_threshold: 0.001
     progress_checker_plugin: "progress_checker"
     goal_checker_plugin: "goal_checker"
     controller_plugin: "FollowPath"
     progress_checker:
       plugin: "nav2_controller::SimpleProgressChecker"
-      required_movement_radius: 0.10
+      required_movement_radius: 0.05
       movement_time_allowance: 5.0
     goal_checker:
       plugin: "nav2_controller::SimpleGoalChecker"
-      xy_goal_tolerance: 0.15
+      xy_goal_tolerance: 0.18
       yaw_goal_tolerance: 0.15
       stateful: True
     # DWB controller parameters
@@ -40,26 +41,26 @@ low_level_planner:
       vx_samples: 20
       vy_samples: 1
       vtheta_samples: 20
-      sim_time: 2.0
-      linear_granularity: 0.025
+      sim_time: 2.5
+      linear_granularity: 0.0125
       angular_granularity: 0.025
       transform_tolerance: 0.2
-      xy_goal_tolerance: 0.25
+      xy_goal_tolerance: 0.10 # Less than the Goal checker
       trans_stopped_velocity: 0.05
       short_circuit_trajectory_evaluation: True
       stateful: True
       critics: ["RotateToGoal", "Oscillation", "BaseObstacle", "GoalAlign", "PathAlign", "PathDist", "GoalDist", "PreferForward"]
-      BaseObstacle.scale: 0.02
-      PathAlign.scale: 16.0
-      GoalAlign.scale: 24.0
-      PathAlign.forward_point_distance: 0.2
-      GoalAlign.forward_point_distance: 0.2
-      PathDist.scale: 16.0
-      GoalDist.scale: 24.0
+      PathAlign.forward_point_distance: 0.1  # Set less than goal distance
+      GoalAlign.forward_point_distance: 0.1
+      BaseObstacle.scale: 0.05
+      PathAlign.scale: 12.0
+      GoalAlign.scale: 16.0
+      PathDist.scale: 32.0
+      GoalDist.scale: 28.0
       PreferForward.scale: 1.0
-      RotateToGoal.scale: 32.0
+      RotateToGoal.scale: 24.0
       RotateToGoal.slowing_factor: 5.0
-      RotateToGoal.lookahead_time: -1.0
+      RotateToGoal.lookahead_time: 0.5
 
 low_level_planner_rclcpp_node:
   ros__parameters:

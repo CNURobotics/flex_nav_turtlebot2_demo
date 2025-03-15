@@ -220,19 +220,20 @@ class Turtlebot2FlexPlannerDetectorSM(Behavior):
 
             # x:785 y:600
             OperatableStateMachine.add('spin',
-                                       TimedTwistState(target_time=12, velocity=0.01, rotation_rate=1.0471975511965976, cmd_topic='cmd_vel', cmd_topic_stamped=''),
+                                       TimedTwistState(target_time=12, velocity=0.01, rotation_rate=1.0471975511965976,
+                                                       cmd_topic='', cmd_topic_stamped='cmd_vel'),
                                        transitions={'done': 'AllStop'},
                                        autonomy={'done': Autonomy.Off})
 
             # x:789 y:516
             OperatableStateMachine.add('spin_right',
-                                       RotateAngleState(target_time=8.0, target_angle=-360.0, cmd_topic='/cmd_vel', odometry_topic='/odom', cmd_topic_stamped=''),
+                                       RotateAngleState(target_time=8.0, target_angle=-360.0, cmd_topic='/cmd_vel', odometry_topic='/odom', cmd_topic_stamped='cmd_vel'),
                                        transitions={'done': 'AllStop'},
                                        autonomy={'done': Autonomy.Off})
 
             # x:991 y:496
             OperatableStateMachine.add('AllStop',
-                                       TimedStopState(timeout=0.25, cmd_topic='cmd_vel', odom_topic='odom', cmd_topic_stamped=''),
+                                       TimedStopState(timeout=0.25, cmd_topic='', odom_topic='odom', cmd_topic_stamped='cmd_vel'),
                                        transitions={'done': 'Log Success', 'failed': 'StopFailed'},
                                        autonomy={'done': Autonomy.Off, 'failed': Autonomy.Off})
 

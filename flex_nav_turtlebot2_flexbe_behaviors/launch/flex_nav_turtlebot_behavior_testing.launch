@@ -2,10 +2,10 @@
 
 <launch>
 
-  <arg name="robot_namespace" default="turtlebot"/>
+  <arg name="robot_namespace" default="tbot0"/>
 
   <group ns="$(arg robot_namespace)">
-    <include file="$(find flexbe_app)/launch/flexbe_ocs.launch"/>
+    <include file="$(find flexbe_webui)/launch/flexbe_ocs.launch"/>
     <include file="$(find flexbe_onboard)/launch/behavior_onboard.launch"/>
   </group>
 

@@ -8,7 +8,7 @@ low_mid_level_planner:
     distance_threshold: 0.15 # Distance in meters from final position to determine success
     planner_plugin: 'GridBased'
     GridBased:
-      plugin: 'nav2_navfn_planner/NavfnPlanner'
+      plugin: 'nav2_navfn_planner::NavfnPlanner'
       allow_unknown: true
       tolerance: 0.125
       use_astar: false

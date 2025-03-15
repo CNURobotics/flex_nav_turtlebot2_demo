@@ -11,18 +11,10 @@ This repository contains code that interfaces with the ROS 2 versions of the
 [FlexBE App], and the [Flexible Navigation] system.
 
 
-> NOTE: An earlier release of Humble had an issue with Navigation 2 that resulted in an
-> empty local costmap. This issue seems to be resolved; at the time, a fix was to change the default DDS provider
-<pre>
-  # Dealing with https://github.com/ros-planning/navigation2/issues/3014 (2489 and 3018)
-  echo "Changing default DDS to Cyclone due to Nav 2 issue!"
-  export RMW_IMPLEMENTATION=rmw_cyclonedds_cpp
-</pre>
-
 Installation and Setup
 ----------------------
 
-This package has a number of dependencies.  
+This package has a number of dependencies.
 
 For CNU Robotics work, we typically use [CHRISLab Install] scripts to handle workspace
 setup, install, and build.  The repos listed below are included in the [CHRISLab Install] scripts.
@@ -33,14 +25,13 @@ Quickly skim this README before installing or running anything:
 This demonstration makes use of the following repositories:
 
 <pre>
-- git: {local-name: src/flexbe_app,               uri: 'https://github.com/FlexBE/flexbe_app.git',                    version: ros2-devel }
+- git: {local-name: src/flexbe_webui,               uri: 'https://github.com/FlexBE/flexbe_webui.git',                    version: ros2-devel }
 - git: {local-name: src/flexbe_behavior_engine,   uri: 'https://github.com/FlexBE/flexbe_behavior_engine.git',        version: ros2-devel }
 - git: {local-name: src/flexible_navigation,      uri: 'https://github.com/FlexBE/flexible_navigation.git',           version: ros2-devel }
 - git: {local-name: src/flex_nav_turtlebot2_demo, uri: 'https://github.com/CNURobotics/flex_nav_turtlebot2_demo.git', version: ros2-devel }
 - git: {local-name: src/ball_detector,            uri: 'https://github.com/CNURobotics/ball_detector.git',            version: ros2-devel }
 - git: {local-name: src/chris_ros_turtlebot2,     uri: 'https://github.com/CNURobotics/chris_ros_turtlebot2.git',     version: ros2-devel }
 - git: {local-name: src/chris_world_models,       uri: 'https://github.com/CNURobotics/chris_world_models.git',       version: ros2-devel }
-- git: {local-name: src/openni2_camera,           uri: 'https://github.com/CNURobotics/openni2_camera.git',           version: astra-humble }
 </pre>
 
 At this current stage, some Kobuki Turtlebot2 related packages are not released in ROS2 binary form, so we are using the following for source builds:
@@ -58,20 +49,14 @@ At this current stage, some Kobuki Turtlebot2 related packages are not released 
 Install in the `src` folder of your WORKSPACE_ROOT, and from the
 
 <pre>
-colcon build
+colcon build --symlink-install
 . setup.bash
 </pre>
 
-> NOTE: Anytime you build new packages, you need to re-run the setup.bash script inside the workspace root.  
+or use the aliases in `chris_install` (e.g. `ccb`, `ccbs`, `ccbu`)
+
+> NOTE: Anytime you build new packages, you need to re-run the setup.bash script inside the workspace root.
 > Anytime you change a Python script or launch file, you need to re-run `colcon build` from the WORKSPACE_ROOT folder, but you only need to re-source `. setup.bash` when the package information and folders change.
-
-On a new build, you must install the Java Script package that the FlexBE app will require:
-<pre>
-ros2 run flexbe_app nwjs_install
-</pre>
-
-> Note: With colcon, this will need to be re-run anytime the `install` folder is deleted as it is installed relative to the `flexbe_app` package.
-
 
 
 ## Operation
@@ -102,9 +87,9 @@ For OCS, either `ocs-tmux` or `launch-ocs` bash script is available.
 
 <pre>
 export USE_SIM_TIME=True
-ros2 run flex_nav_turtlebot2_bringup launch-sim  
+ros2 run flex_nav_turtlebot2_bringup launch-sim
 ros2 run flex_nav_turtlebot2_bringup launch-onboard
-ros2 run flex_nav_turtlebot2_bringup launch-ocs  
+ros2 run flex_nav_turtlebot2_bringup launch-ocs
 </pre>
 
 These may be started up on a single computer, or multiple computers if using networked simulation.
@@ -118,41 +103,31 @@ There are also associated `tmux` versions for simulation if preferred.
 
 To launch in separate terminals, use these commands in each terminal:
 
+> Note: the launch scripts default to using `use_sim_time:=True`
+
 <pre>
 # Simulation
-ros2 launch chris_world_models ${WORLD_MODEL:=gazebo_creech_world}.launch.py use_sim_time:=True
-ros2 launch chris_ros_turtlebot2 turtlebot_gazebo.launch.py use_sim_time:=True
+
+
+clear; ros2 launch chris_world_models ${WORLD_MODEL:=gazebo_creech_world}.launch.py
+clear; ros2 launch chris_ros_turtlebot2 turtlebot_gazebo.launch.py
 
 # Onboard
 # To use other (e.g. fake, amcl, or cartographer, set LOCALIZATION environment variable (e.g. export LOCALIZATION=amcl)
 # To use other (e.g. flex, flex_multi, or flex_four_level, set FLEX_NAV_SETUP environment variable (e.g. export LOCALIZATION=flex)
-ros2 launch flex_nav_turtlebot2_bringup "${LOCALIZATION:=fake}.launch.py" use_sim_time:=True
-ros2 launch flex_nav_turtlebot2_bringup ${FLEX_NAV_SETUP:=flex}.launch.py use_sim_time:=True
-ros2 launch flexbe_onboard behavior_onboard.launch.py use_sim_time:=True
+clear; ros2 launch flex_nav_turtlebot2_bringup "${LOCALIZATION:=fake}.launch.py"
+clear; ros2 launch flex_nav_turtlebot2_bringup ${FLEX_NAV_SETUP:=flex}.launch.py
+clear; ros2 launch flexbe_onboard behavior_onboard.launch.py
 
 # Operator Control Station (OCS)
-ros2 launch flex_nav_turtlebot2_bringup rviz.launch.py use_sim_time:=True
-ros2 run flexbe_mirror behavior_mirror_sm --ros-args --remap __node:="behavior_mirror" -p use_sim_time:=True
-ros2 run flexbe_widget be_launcher --ros-args --remap __node:="behavior_launcher" -p use_sim_time:=True
-ros2 run flexbe_app run_app --ros-args --remap __node:="flexbe_app" -p use_sim_time:=True
+clear; ros2 launch flex_nav_turtlebot2_bringup rviz.launch.py
+clear; ros2 launch flexbe_webui flexbe_ocs.launch.py headless:=true
+clear; ros2 run flexbe_webui webui_client
 
 # Optional depending on selected behavior
-ros2 launch flex_nav_turtlebot2_bringup paths_by_name.launch.py use_sim_time:=True
-ros2 launch simple_ball_detector ball_detector.launch.py use_sim_time:=True
+clear; ros2 launch flex_nav_turtlebot2_bringup paths_by_name.launch.py
+clear; ros2 launch simple_ball_detector ball_detector.launch.py
 </pre>
-
-
-<pre>
-ros2 launch flex_nav_turtlebot2_bringup flex_multi_level.launch use_sim_time:=True
-</pre>
-
-or
-
-<pre>
-ros2 launch flex_nav_turtlebot2_bringup flex_four__level.launch use_sim_time:=True
-</pre>
-
-> Until we fix the launch files to new style.
 
 ----
 
@@ -184,7 +159,7 @@ The following directions are for a simple demonstration of Flexible Navigation
 
 ### Optional: Drop some balls at random locations in simulation
 
-The "Detector" behaviors look for balls in the scene.  
+The "Detector" behaviors look for balls in the scene.
 To add some to simulation at random locations use:
 
  * `ros2 launch chris_world_models creech_random_balls.launch.py`
@@ -220,7 +195,7 @@ These are relatively small and may not be that useful.
 To see full size, it might be better to periodically run:
 
   * `ros2 run image_view image_saver --ros-args --remap image:=/ball_detector/image` or
-  * `ros2 run image_view image_view --ros-args --remap image:=/ball_detector/image`  
+  * `ros2 run image_view image_view --ros-args --remap image:=/ball_detector/image`
 
 
   You can also add a `MarkerArray` with the topic `/ball_detector/ball_markers`.
@@ -274,7 +249,8 @@ or
 
 
 ### FlexBE Operation
-After OCS startup, all control is through the FlexBE App operator interface and RViz.  
+
+After OCS startup, all control is through the FlexBE App operator interface and RViz.
 
 > NOTE: For first run, you may need to `ros2 run flexbe_app nwjs_install` for new install build
 
@@ -295,9 +271,9 @@ After OCS startup, all control is through the FlexBE App operator interface and 
   * If the system is in `low` autonomy or higher, the system will request a global plan as soon as the goal is received
   * If the autonomy level is `off` (default), then the operator will need to confirm receipt by clicking the `done` transition.
 
-* After requesting a path to the goal, the resulting plan will be visualized in the `RViz` window.  
-  * If the system is not in full autonomy mode, the operator must confirm that the system should execute the plan via the `FlexBE UI`  
-  * If the operator sets the `Runtime Executive` to `full` autonomy, the plan will automatically be executed.  
+* After requesting a path to the goal, the resulting plan will be visualized in the `RViz` window.
+  * If the system is not in full autonomy mode, the operator must confirm that the system should execute the plan via the `FlexBE UI`
+  * If the operator sets the `Runtime Executive` to `full` autonomy, the plan will automatically be executed.
   * In less than `full` autonomy, the operator can request a recovery behavior at this point.
 
 * Once execution of this plan is complete, `FlexBE` will seek permission to continue planning
@@ -305,8 +281,8 @@ After OCS startup, all control is through the FlexBE App operator interface and 
   * In any autonomy level less than `full`, the system will require an operator decision to continue
 
 Whenever a plan is being executed, the `FlexBE` state machine transitions to a concurrent node that uses on line  planners
-to refine the plans as the robot moves, and also monitors the Turtlebot bumper status for collision.  
-The operator can terminate the execution early by selecting the appropriate transition in the `FlexBE UI`.  
+to refine the plans as the robot moves, and also monitors the Turtlebot bumper status for collision.
+The operator can terminate the execution early by selecting the appropriate transition in the `FlexBE UI`.
 If this low level plan fails, the robot will request permission to initiate a recovery behavior;
 in `full` autonomy the system automatically initiates the recovery.
 

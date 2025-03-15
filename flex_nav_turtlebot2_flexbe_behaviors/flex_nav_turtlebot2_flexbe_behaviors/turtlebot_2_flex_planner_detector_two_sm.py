@@ -143,8 +143,8 @@ class Turtlebot2FlexPlannerDetectorTwoSM(Behavior):
 
             # x:963 y:441
             OperatableStateMachine.add('CheckStop',
-                                       TimedStopState(timeout=0.5, cmd_topic='cmd_vel', odom_topic='odom',
-                                                      cmd_topic_stamped="cmd_vel_stamped"),
+                                       TimedStopState(timeout=0.5, cmd_topic='', odom_topic='odom',
+                                                      cmd_topic_stamped="cmd_vel"),
                                        transitions={'done': 'Continue', 'failed': 'CheckStop'},
                                        autonomy={'done': Autonomy.Off, 'failed': Autonomy.Off})
 
@@ -235,14 +235,14 @@ class Turtlebot2FlexPlannerDetectorTwoSM(Behavior):
             # x:750 y:599
             OperatableStateMachine.add('spin',
                                        TimedTwistState(target_time=8, velocity=0.01, rotation_rate=0.628,
-                                                       cmd_topic='cmd_vel', cmd_topic_stamped=''),
+                                                       cmd_topic='', cmd_topic_stamped='cmd_vel'),
                                        transitions={'done': 'CheckStop'},
                                        autonomy={'done': Autonomy.Off})
 
             # x:745 y:484
             OperatableStateMachine.add('spin_right',
-                                       RotateAngleState(target_time=8.0, target_angle=-360.0, cmd_topic='/cmd_vel',
-                                                        odometry_topic='/odom', cmd_topic_stamped='cmd_vel_stamped'),
+                                       RotateAngleState(target_time=8.0, target_angle=-360.0, cmd_topic='',
+                                                        odometry_topic='/odom', cmd_topic_stamped='cmd_vel'),
                                        transitions={'done': 'CheckStop'},
                                        autonomy={'done': Autonomy.Off})
 
