@@ -250,9 +250,7 @@ or
 
 ### FlexBE Operation
 
-After OCS startup, all control is through the FlexBE App operator interface and RViz.
-
-> NOTE: For first run, you may need to `ros2 run flexbe_app nwjs_install` for new install build
+After OCS startup, all control is through the [FlexBE WebUI] operator interface and RViz.
 
 * First load the desired behavior through the `FlexBE Behavior Dashboard` tab.
   * The behavior should match the flex launch started above.
@@ -302,7 +300,7 @@ Please use the following publications for reference when using Flexible Navigati
 
 [ROS 2]: https://docs.ros.org/en/foxy/index.html
 [FlexBE]: https://flexbe.github.io
-[FlexBE App]: https://github.com/FlexBE/flexbe_app
+[FlexBE WebUI]: https://github.com/FlexBE/flexbe_webui
 [FlexBE Behavior Engine]: https://github.com/FlexBE/flexbe_behavior_engine
 [Flexible Navigation]: https://github.com/FlexBE/flexible_navigation
 [Wiki]: http://wiki.ros.org/flexible_navigation

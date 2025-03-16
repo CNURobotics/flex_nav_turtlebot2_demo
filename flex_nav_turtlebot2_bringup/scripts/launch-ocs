@@ -19,7 +19,7 @@ echo "Wait 2 seconds for Launcher startup ..."
 sleep 2
 
 echo "Launch FlexBE App ..."
-gnome-terminal --tab --title="FlexBE App" -- ros2 run flexbe_app run_app --ros-args --remap __node:="flexbe_app" -p use_sim_time:=${USE_SIM_TIME:=True}
+gnome-terminal --tab --title="FlexBE WebUI" -- ros2 run flexbe_webui webui_client --ros-args -p use_sim_time:=${USE_SIM_TIME:=True}
 
 echo ""
 

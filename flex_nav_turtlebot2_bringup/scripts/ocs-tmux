@@ -11,7 +11,7 @@ echo "Wait 2 seconds for RViz startup ..."
 sleep 2
 
 echo "Launch FlexBE Mirror ..."
-tmux new-window -n flexbe_mirror -tturtlebot-ocs ros2 run flexbe_mirror behavior_mirror_sm --ros-args --remap name:="behavior_mirror"
+tmux new-window -n flexbe_mirror -tturtlebot-ocs ros2 run flexbe_mirror behavior_mirror_sm --ros-args --remap name:="behavior_mirror" -p use_sim_time:=${USE_SIM_TIME:=True}
 
 echo "Wait 2 seconds for Mirror startup ..."
 sleep 2
@@ -23,7 +23,7 @@ echo "Wait 2 seconds for Launcher startup ..."
 sleep 2
 
 echo "Launch FlexBE App ..."
-tmux new-window -n flexbe_app -tturtlebot-ocs  -- ros2 run flexbe_app run_app --ros-args --remap name:="flexbe_app" use_sim_time:=${USE_SIM_TIME:=True}
+tmux new-window -n flexbe_webui -tturtlebot-ocs  -- ros2 run flexbe_webui webui_client --ros-args -p use_sim_time:=${USE_SIM_TIME:=True}
 
 if $USE_SIM_TIME ; then
   echo "Using simulation time - should be tied to simulation not hardware!"
