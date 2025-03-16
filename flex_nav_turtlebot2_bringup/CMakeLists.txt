@@ -37,7 +37,7 @@ install(DIRECTORY paths
 # Install bash launch scripts
 install(PROGRAMS
   scripts/hw-tmux
-  scripts/hw-kinect-tmux
+  scripts/hw-camera-tmux
   scripts/launch-ocs
   scripts/launch-onboard
   scripts/launch-sim

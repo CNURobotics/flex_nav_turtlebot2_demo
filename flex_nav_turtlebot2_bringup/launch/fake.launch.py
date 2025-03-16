@@ -54,6 +54,7 @@ def generate_launch_description():
              executable='fake_localization',
              name=localization_name,
              output='screen',
+             emulate_tty=True,  # https://github.com/ros2/launch/issues/188
              parameters=[],
              remappings=remappings),
 
