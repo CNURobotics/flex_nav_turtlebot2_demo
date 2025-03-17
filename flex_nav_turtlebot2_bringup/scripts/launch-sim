@@ -10,7 +10,7 @@ gnome-terminal --tab --title="Gazebo" --  ros2 launch chris_world_models ${WORLD
 echo "Wait 5 seconds for Gazebo startup ..."
 sleep 5
 
-echo "Launch turtlebot2 sinulation ..."
+echo "Launch turtlebot2 simulation ..."
 gnome-terminal --tab --title="Turtlebot" --  ros2 launch chris_ros_turtlebot2 turtlebot_gazebo.launch.py use_sim_time:=True
 sleep 2
 
