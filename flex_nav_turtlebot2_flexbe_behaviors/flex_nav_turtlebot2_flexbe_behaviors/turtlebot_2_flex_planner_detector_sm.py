@@ -227,7 +227,7 @@ class Turtlebot2FlexPlannerDetectorSM(Behavior):
 
             # x:789 y:516
             OperatableStateMachine.add('spin_right',
-                                       RotateAngleState(target_time=8.0, target_angle=-360.0, cmd_topic='/cmd_vel', odometry_topic='/odom', cmd_topic_stamped='cmd_vel'),
+                                       RotateAngleState(target_time=8.0, target_angle=-360.0, cmd_topic='', odometry_topic='/odom', cmd_topic_stamped='cmd_vel'),
                                        transitions={'done': 'AllStop'},
                                        autonomy={'done': Autonomy.Off})
 

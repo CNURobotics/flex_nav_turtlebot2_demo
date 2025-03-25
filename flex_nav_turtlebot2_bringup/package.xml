@@ -17,6 +17,7 @@
   <depend>flex_nav_flexbe_states</depend>
   <depend>rclcpp</depend>
   <depend>sensor_msgs</depend>
+  <depend>nav2_regulated_pure_pursuit_controller</depend>
 
   <export>
     <build_type>ament_cmake</build_type>

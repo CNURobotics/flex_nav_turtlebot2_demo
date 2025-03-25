@@ -12,55 +12,84 @@ low_level_planner:
     controller_plugin: "FollowPath"
     progress_checker:
       plugin: "nav2_controller::SimpleProgressChecker"
-      required_movement_radius: 0.05
-      movement_time_allowance: 5.0
+      required_movement_radius: 0.025
+      movement_time_allowance: 10.0
     goal_checker:
       plugin: "nav2_controller::SimpleGoalChecker"
-      xy_goal_tolerance: 0.18
-      yaw_goal_tolerance: 0.15
+      xy_goal_tolerance: 0.10
+      yaw_goal_tolerance: 0.17  # ~10 degrees
       stateful: True
     # DWB controller parameters
     FollowPath:
-      plugin: "dwb_core::DWBLocalPlanner"
-      debug_trajectory_details: True
-      marker_lifetime: 0.25
-      min_vel_x: -.05 # Allow some backwards motion
-      min_vel_y: 0.0
-      max_vel_x: 0.26
-      max_vel_y: 0.0
-      max_vel_theta: 1.0
-      min_speed_xy: 0.0
-      max_speed_xy: 0.26
-      min_speed_theta: 0.0
-      acc_lim_x: 2.5
-      acc_lim_y: 0.0
-      acc_lim_theta: 3.2
-      decel_lim_x: -2.5
-      decel_lim_y: 0.0
-      decel_lim_theta: -3.2
-      vx_samples: 20
-      vy_samples: 1
-      vtheta_samples: 20
-      sim_time: 2.5
-      linear_granularity: 0.0125
-      angular_granularity: 0.025
-      transform_tolerance: 0.2
-      xy_goal_tolerance: 0.10 # Less than the Goal checker
-      trans_stopped_velocity: 0.05
-      short_circuit_trajectory_evaluation: True
-      stateful: True
-      critics: ["RotateToGoal", "Oscillation", "BaseObstacle", "GoalAlign", "PathAlign", "PathDist", "GoalDist", "PreferForward"]
-      PathAlign.forward_point_distance: 0.1  # Set less than goal distance
-      GoalAlign.forward_point_distance: 0.1
-      BaseObstacle.scale: 0.05
-      PathAlign.scale: 12.0
-      GoalAlign.scale: 16.0
-      PathDist.scale: 32.0
-      GoalDist.scale: 28.0
-      PreferForward.scale: 1.0
-      RotateToGoal.scale: 24.0
-      RotateToGoal.slowing_factor: 5.0
-      RotateToGoal.lookahead_time: 0.5
+      plugin: "nav2_regulated_pure_pursuit_controller::RegulatedPurePursuitController"
+      desired_linear_vel: 0.3
+      lookahead_dist: 0.5
+      min_lookahead_dist: 0.20
+      max_lookahead_dist: 0.75
+      lookahead_time: 1.5
+      rotate_to_heading_angular_vel: 0.524
+      transform_tolerance: 0.1
+      use_velocity_scaled_lookahead_dist: true
+      min_approach_linear_velocity: 0.05
+      approach_velocity_scaling_dist: 0.2
+      use_collision_detection: true
+      max_allowed_time_to_collision_up_to_carrot: 0.5
+      use_regulated_linear_velocity_scaling: true
+      inflation_cost_scaling_factor: 5.0
+      cost_scaling_dist: 0.15
+      cost_scaling_gain: 0.5
+      use_fixed_curvature_lookahead: true
+      curvature_lookahead_dist: 0.25
+      use_cost_regulated_linear_velocity_scaling: true
+      regulated_linear_scaling_min_radius: 0.2
+      regulated_linear_scaling_min_speed: 0.1
+      use_rotate_to_heading: true
+      allow_reversing: false
+      rotate_to_heading_min_angle: 0.757
+      max_angular_accel: 3.0
+      use_cancel_deceleration: true
+      cancel_deceleration: 3.2
+      max_robot_pose_search_dist: 2.0  # Assuming robot relatively close to path
+      # plugin: "dwb_core::DWBLocalPlanner"
+      # debug_trajectory_details: True
+      # marker_lifetime: 0.25
+      # min_vel_x: -.05 # Allow some backwards motion
+      # min_vel_y: 0.0
+      # max_vel_x: 0.26
+      # max_vel_y: 0.0
+      # max_vel_theta: 1.0
+      # min_speed_xy: 0.0
+      # max_speed_xy: 0.26
+      # min_speed_theta: 0.0
+      # acc_lim_x: 2.5
+      # acc_lim_y: 0.0
+      # acc_lim_theta: 3.2
+      # decel_lim_x: -2.5
+      # decel_lim_y: 0.0
+      # decel_lim_theta: -3.2
+      # vx_samples: 20
+      # vy_samples: 1
+      # vtheta_samples: 20
+      # sim_time: 2.5
+      # linear_granularity: 0.0125
+      # angular_granularity: 0.025
+      # transform_tolerance: 0.2
+      # xy_goal_tolerance: 0.10 # Less than the Goal checker
+      # trans_stopped_velocity: 0.05
+      # short_circuit_trajectory_evaluation: True
+      # stateful: True
+      # critics: ["RotateToGoal", "Oscillation", "BaseObstacle", "GoalAlign", "PathAlign", "PathDist", "GoalDist", "PreferForward"]
+      # PathAlign.forward_point_distance: 0.1  # Set less than goal distance
+      # GoalAlign.forward_point_distance: 0.1
+      # BaseObstacle.scale: 0.05
+      # PathAlign.scale: 12.0
+      # GoalAlign.scale: 16.0
+      # PathDist.scale: 32.0
+      # GoalDist.scale: 28.0
+      # PreferForward.scale: 1.0
+      # RotateToGoal.scale: 24.0
+      # RotateToGoal.slowing_factor: 5.0
+      # RotateToGoal.lookahead_time: 0.5
 
 low_level_planner_rclcpp_node:
   ros__parameters:
