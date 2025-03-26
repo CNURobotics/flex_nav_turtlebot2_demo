@@ -25,7 +25,7 @@ Quickly skim this README before installing or running anything:
 This demonstration makes use of the following repositories:
 
 <pre>
-- git: {local-name: src/flexbe_webui,               uri: 'https://github.com/FlexBE/flexbe_webui.git',                    version: ros2-devel }
+- git: {local-name: src/flexbe_webui,               uri: 'https://github.com/FlexBE/flexbe_webui.git',                    version: main }
 - git: {local-name: src/flexbe_behavior_engine,   uri: 'https://github.com/FlexBE/flexbe_behavior_engine.git',        version: ros2-devel }
 - git: {local-name: src/flexible_navigation,      uri: 'https://github.com/FlexBE/flexible_navigation.git',           version: ros2-devel }
 - git: {local-name: src/flex_nav_turtlebot2_demo, uri: 'https://github.com/CNURobotics/flex_nav_turtlebot2_demo.git', version: ros2-devel }
@@ -34,17 +34,7 @@ This demonstration makes use of the following repositories:
 - git: {local-name: src/chris_world_models,       uri: 'https://github.com/CNURobotics/chris_world_models.git',       version: ros2-devel }
 </pre>
 
-At this current stage, some Kobuki Turtlebot2 related packages are not released in ROS2 binary form, so we are using the following for source builds:
-<pre>
-- git: {local-name: src/sophus,                   uri: 'https://github.com/stonier/sophus.git',                            version: release/1.2.x }
-- git: {local-name: src/ecl_tools,                uri: 'https://github.com/stonier/ecl_tools.git',                         version: devel }
-- git: {local-name: src/ecl_lite,                 uri: 'https://github.com/stonier/ecl_lite.git',                          version: devel }
-- git: {local-name: src/ecl_core.git,             uri: 'https://github.com/stonier/ecl_core.git',                          version: devel }
-- git: {local-name: src/kobuki_ros,               uri: 'https://github.com/CNURobotics/kobuki_ros.git',                    version: humble-test }
-- git: {local-name: src/kobuki_core,              uri: 'https://github.com/kobuki-base/kobuki_core.git',                   version: devel }
-- git: {local-name: src/kobuki_ros_interfaces,    uri: 'https://github.com/kobuki-base/kobuki_ros_interfaces.git',         version: devel }
-</pre>
-
+See specific directions for each package in their associated README files.
 
 Install in the `src` folder of your WORKSPACE_ROOT, and from the
 
@@ -122,12 +112,14 @@ clear; ros2 launch flexbe_onboard behavior_onboard.launch.py
 # Operator Control Station (OCS)
 clear; ros2 launch flex_nav_turtlebot2_bringup rviz.launch.py
 clear; ros2 launch flexbe_webui flexbe_ocs.launch.py headless:=true
-clear; ros2 run flexbe_webui webui_client
+clear; ros2 run flexbe_webui webui_client --qt_software
 
 # Optional depending on selected behavior
 clear; ros2 launch flex_nav_turtlebot2_bringup paths_by_name.launch.py
 clear; ros2 launch simple_ball_detector ball_detector.launch.py
 </pre>
+
+> Note: We are using the `--qt_software` option for `flexbe_webui` version `4.0.3` due to some observed issues on older NVidia GPUs and Ubuntu 24.04.
 
 ----
 

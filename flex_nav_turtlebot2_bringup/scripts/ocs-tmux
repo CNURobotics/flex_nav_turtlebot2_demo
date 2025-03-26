@@ -23,7 +23,7 @@ echo "Wait 2 seconds for Launcher startup ..."
 sleep 2
 
 echo "Launch FlexBE App ..."
-tmux new-window -n flexbe_webui -tturtlebot-ocs  -- ros2 run flexbe_webui webui_client --ros-args -p use_sim_time:=${USE_SIM_TIME:=True}
+tmux new-window -n flexbe_webui -tturtlebot-ocs  -- ros2 run flexbe_webui webui_client --qt_software --ros-args -p use_sim_time:=${USE_SIM_TIME:=True}
 
 if $USE_SIM_TIME ; then
   echo "Using simulation time - should be tied to simulation not hardware!"
