@@ -104,20 +104,20 @@ class Turtlebot2FlexPlannerDetectorTwoSM(Behavior):
         # [/MANUAL_CREATE]
         # x:620 y:107, x:621 y:217, x:230 y:365, x:526 y:472, x:640 y:322, x:637 y:255, x:624 y:375, x:314 y:426, x:594 y:416, x:599 y:44, x:1030 y:365, x:1130 y:365
         _sm_container_0 = ConcurrencyContainer(outcomes=['finished', 'failed', 'red_ball', 'other_ball'], input_keys=['plan'], conditions=[
-                                               ('finished', [('low_level_planner', 'done')]),
-                                               ('failed', [('low_level_planner', 'failed')]),
+                                               ('finished', [('low_level_controller', 'done')]),
+                                               ('failed', [('low_level_controller', 'failed')]),
                                                ('other_ball', [('ball_detector', 'green_ball')]),
                                                ('other_ball', [('ball_detector', 'blue_ball')]),
                                                ('red_ball', [('ball_detector', 'red_ball')]),
                                                ('failed', [('ball_detector', 'unavailable')]),
                                                ('failed', [('ball_detector', 'invalid')]),
-                                               ('failed', [('low_level_planner', 'canceled')])
+                                               ('failed', [('low_level_controller', 'canceled')])
                                                ])
 
         with _sm_container_0:
             # x:189 y:104
-            OperatableStateMachine.add('low_level_planner',
-                                       FollowPathState(topic='low_level_planner'),
+            OperatableStateMachine.add('low_level_controller',
+                                       FollowPathState(topic='low_level_controller'),
                                        transitions={'done': 'finished', 'failed': 'failed', 'canceled': 'failed'},
                                        autonomy={'done': Autonomy.Off, 'failed': Autonomy.Off, 'canceled': Autonomy.Off},
                                        remapping={'plan': 'plan'})
@@ -137,7 +137,7 @@ class Turtlebot2FlexPlannerDetectorTwoSM(Behavior):
             # x:193 y:26
             OperatableStateMachine.add('ClearCostmap',
                                        ClearCostmapsState(costmap_topics=['high_level_planner/clear_costmap',
-                                                                          'low_level_planner/clear_costmap'], timeout=5.0),
+                                                                          'low_level_controller/clear_costmap'], timeout=5.0),
                                        transitions={'done': 'Continue', 'failed': 'failed'},
                                        autonomy={'done': Autonomy.Off, 'failed': Autonomy.Off})
 

@@ -94,7 +94,7 @@ class Turtlebot2FlexPlannerSM(Behavior):
             # x:193 y:26
             OperatableStateMachine.add('ClearCostmap',
                                        ClearCostmapsState(costmap_topics=['high_level_planner/clear_costmap',
-                                                                          'low_level_planner/clear_costmap'], timeout=5.0),
+                                                                          'low_level_controller/clear_costmap'], timeout=5.0),
                                        transitions={'done': 'Receive Goal', 'failed': 'failed'},
                                        autonomy={'done': Autonomy.Off, 'failed': Autonomy.Off})
 
@@ -107,7 +107,7 @@ class Turtlebot2FlexPlannerSM(Behavior):
 
             # x:435 y:299
             OperatableStateMachine.add('Execute Path',
-                                       FollowPathState(topic="low_level_planner"),
+                                       FollowPathState(topic="low_level_controller"),
                                        transitions={'done': 'Log Success', 'failed': 'AutoReplan', 'canceled': 'Continue'},
                                        autonomy={'done': Autonomy.Off, 'failed': Autonomy.Off, 'canceled': Autonomy.Off},
                                        remapping={'plan': 'plan'})

@@ -1,4 +1,4 @@
-low_level_planner:
+low_level_controller:
   ros__parameters:
     # controller server parameters (see Controller Server for more info)
     use_sim_time: False
@@ -91,6 +91,6 @@ low_level_planner:
       # RotateToGoal.slowing_factor: 5.0
       # RotateToGoal.lookahead_time: 0.5
 
-low_level_planner_rclcpp_node:
+low_level_controller_rclcpp_node:
   ros__parameters:
     use_sim_time: False
