@@ -22,7 +22,10 @@ tmux new-window -n flexbe_launcher -tturtlebot-ocs ros2 run flexbe_widget be_lau
 echo "Wait 2 seconds for Launcher startup ..."
 sleep 2
 
-echo "Launch FlexBE App ..."
+echo "Launch FlexBE UI Server ..."
+tmux new-window -n flexbe_webui -tturtlebot-ocs  -- ros2 run flexbe_webui webui_node --ros-args -p use_sim_time:=${USE_SIM_TIME:=True}
+
+echo "Launch FlexBE UI Client ..."
 tmux new-window -n flexbe_webui -tturtlebot-ocs  -- ros2 run flexbe_webui webui_client --qt_software --ros-args -p use_sim_time:=${USE_SIM_TIME:=True}
 
 if $USE_SIM_TIME ; then

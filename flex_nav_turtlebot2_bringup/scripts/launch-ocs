@@ -18,8 +18,13 @@ gnome-terminal --tab --title="FlexBE Launcher" -- ros2 run flexbe_widget be_laun
 echo "Wait 2 seconds for Launcher startup ..."
 sleep 2
 
-echo "Launch FlexBE App ..."
-gnome-terminal --tab --title="FlexBE WebUI" -- ros2 run flexbe_webui webui_client --qt_software --ros-args -p use_sim_time:=${USE_SIM_TIME:=True}
+echo "Launch FlexBE WebUI Node ..."
+gnome-terminal --tab --title="FlexBE UI Server" -- ros2 run flexbe_webui webui_node --ros-args -p use_sim_time:=${USE_SIM_TIME:=True}
+
+sleep 2
+
+echo "Launch FlexBE WebUI Client ..."
+gnome-terminal --tab --title="FlexBE UI Client" -- ros2 run flexbe_webui webui_client --qt_software --ros-args -p use_sim_time:=${USE_SIM_TIME:=True}
 
 echo ""
 
