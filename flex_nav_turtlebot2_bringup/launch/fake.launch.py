@@ -55,7 +55,8 @@ def generate_launch_description():
              name=localization_name,
              output='screen',
              emulate_tty=True,  # https://github.com/ros2/launch/issues/188
-             parameters=[],
+             parameters=[{'use_sim_time': use_sim_time,
+                          }],
              remappings=remappings),
 
         Node(package='nav2_map_server',
